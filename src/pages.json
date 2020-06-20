@@ -1,0 +1,126 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页,
+		{
+			"path": "pages/main/main",
+			"style": {
+				"navigationBarTitleText": "数据采集"
+			}
+		}, 
+		{
+			"path": "pages/countryside/countryside",
+			"style": {
+				"navigationBarTitleText": "农村户口"
+			}
+		},
+		{
+			"path": "pages/city/city",
+			"style": {
+				"navigationBarTitleText": "非农业户口"
+			}
+		},
+		{
+			"path": "pages/train/train",
+			"style": {
+				"navigationBarTitleText": "培训"
+			}
+		},
+		{
+			"path": "pages/selectdata/selectdata",
+			"style": {
+				"navigationBarTitleText": "数据查询"
+			}
+		}, 
+		{
+			"path": "pages/mockdata/mockdata",
+			"style": {
+				"navigationBarTitleText": "数据统计"
+			}
+		}, 
+		{
+			"path": "pages/systemdata/systemdata",
+			"style": {
+				"navigationBarTitleText": "系统管理"
+			}
+		}, 
+		{
+			"path": "pages/login/login",
+			"style": {
+				"navigationBarTitleText": "登录",
+				"navigationBarBackgroundColor": "#5f70ff"
+			}
+		}, {
+			"path": "pages/reg/reg",
+			"style": {
+				"navigationBarTitleText": "注册"
+			}
+		}, {
+			"path": "pages/pwd/pwd",
+			"style": {
+				"navigationBarTitleText": "找回密码"
+			}
+		}, {
+			"path": "pages/user/user",
+			"style": {
+				"navigationBarTitleText": "我的"
+			}
+		}
+	],
+	"tabBar": {
+		"color": "#7a7e83",
+		"selectedColor": "#0faeff",
+		"backgroundColor": "#ffffff",
+		"list": [
+			{
+				"pagePath": "pages/main/main",
+				"text": "数据采集",
+				"iconPath": "static/img/home.png",
+				"selectedIconPath": "static/img/homeHL.png"
+			}, {
+				"pagePath": "pages/selectdata/selectdata",
+				"text": "数据查询",
+				"iconPath": "static/img/user.png",
+				"selectedIconPath": "static/img/userHL.png"
+			},
+			{
+				"pagePath": "pages/mockdata/mockdata",
+				"text": "数据统计",
+				"iconPath": "static/img/home.png",
+				"selectedIconPath": "static/img/homeHL.png"
+			}, {
+				"pagePath": "pages/systemdata/systemdata",
+				"text": "系统管理",
+				"iconPath": "static/img/user.png",
+				"selectedIconPath": "static/img/userHL.png"
+			}
+
+		]
+	},
+	"globalStyle": {
+		"navigationBarTextStyle": "white",
+		"navigationBarBackgroundColor": "#0faeff",
+		"backgroundColor": "#fbf9fe",
+		"usingComponents": {
+			"van-icon": "/wxcomponents/vant/dist/icon/index",
+			"van-action-sheet": "/wxcomponents/vant/dist/action-sheet/index",
+			"van-checkbox":"/wxcomponents/vant/dist/checkbox/index",
+			"van-checkbox-group":"/wxcomponents/vant/dist/checkbox-group/index",
+			"van-radio-group":"/wxcomponents/vant/dist/radio-group/index",
+			"van-radio":"/wxcomponents/vant/dist/radio/index",
+			"van-cell":"/wxcomponents/vant/dist/cell/index",
+			"van-cell-group":"/wxcomponents/vant/dist/cell-group/index",
+			"van-datetime-picker":"/wxcomponents/vant/dist/datetime-picker/index",
+			"van-area":"/wxcomponents/vant/dist/area/index",
+			"van-row": "/wxcomponents/vant/dist/row/index",
+			"van-col": "/wxcomponents/vant/dist/col/index",
+			"van-search": "/wxcomponents/vant/dist/search/index",
+			"van-dropdown-menu": "/wxcomponents/vant/dist/dropdown-menu/index",
+			"van-dropdown-item": "/wxcomponents/vant/dist/dropdown-item/index",
+			"van-button": "/wxcomponents/vant/dist/button/index",
+			"van-swipe-cell": "/wxcomponents/vant/dist/swipe-cell/index",
+			"van-panel": "/wxcomponents/vant/dist/panel/index",
+			"van-skeleton":"/wxcomponents/vant/dist/skeleton/index",
+			"van-fields":"/wxcomponents/vant/dist/field/index",
+			"van-notice-bar": "/wxcomponents/vant/dist/notice-bar/index"
+		}
+	}
+}
