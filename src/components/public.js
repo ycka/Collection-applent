@@ -20,6 +20,7 @@ export default{
     methods:{
         color(param){
             console.log(`---------风格样式----------`,param)
+            this.$store.commit('set_styleClass',param)
         }
     }
 }

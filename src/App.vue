@@ -74,7 +74,7 @@
 	.content_in{
 		width:720upx;
 		margin:15upx 6upx;
-		background-color: rgba(0,0,0, 0.6);
+		background-color: none;
 		display: flex;
 		flex: 1;
 		flex-direction: column;
@@ -331,18 +331,30 @@
 		height:20upx;
 		width:100%;
 		display:flex;
+			
 		.style_child{
 			flex:1;
 			height:20upx;
 		}
-		.style_one{
-			background:brown
-		}
-		.style_two{
-			background:cadetblue
-		}
-		.style_three{
-			background:chartreuse
-		}
+		
 	}
+	.style_one{
+		background:#c4c4c4
+	}
+	.style_two{
+		background:#091253;
+	}
+	.style_three{
+		background:#4357eb
+	}
+	.style_four{
+		background:#f0ba00
+	}
+
+.van-checkbox__icon {
+	border-color:#fff!important;
+}
+.van-radio__icon {
+	border-color:#fff!important;
+}
 </style>

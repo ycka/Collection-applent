@@ -11,13 +11,29 @@
             <view slot="action" @tap="onClick">搜索</view>
         </van-search>
         <view class="btn-group">
-            <van-button type="default" size="small" icon="search">全部</van-button>
+            <!-- <van-button type="default" size="small" icon="search">全部</van-button> -->
             <van-dropdown-menu style="flex:1;">
-                <van-dropdown-item id="item1" v-model="value1" :options="option1" @change="setvalue1" />
+                <van-dropdown-item id="item1" title="区域" v-model="value1" @change="setvalue1" >
+                    <view>
+                        <van-tree-select
+                        :items="select_tree"
+                        :main-active-index="mainActiveIndex"
+                        :active-id="activeId"
+                        @click-nav="onClickNav"
+                        @click-item="onClickItem"
+                        />
+                    </view>
+                </van-dropdown-item>
                 <van-dropdown-item id="item2" v-model="value2" :options="option2" @change="setvalue2" />
+                <van-dropdown-item id="item1" title="更多" v-model="value1" @change="setvalue1" >
+                    <view>
+                        自定义
+                    </view>
+                </van-dropdown-item>
+                <van-dropdown-item id="item2" v-model="value3" :options="option3" @change="setvalue3" />
             </van-dropdown-menu>
-            <van-button v-if="iscode" type="default" size="small" icon="ascending"></van-button>
-            <van-button v-else type="default" size="small" icon="descending"></van-button>
+            <!-- <van-button v-if="iscode" type="default" size="small" icon="ascending"></van-button>
+            <van-button v-else type="default" size="small" icon="descending"></van-button> -->
         </view>
 
         <view class="data-box">
@@ -47,6 +63,7 @@
 </template>
 
 <script>
+    import { mapState } from 'vuex'
     export default {
         data(){
             return{
@@ -79,8 +96,11 @@
                 value2:'a',
                 value3:'0',
                 iscode:false,
+                mainActiveIndex:0,
+                activeId: null,
             }
         },
+        computed: mapState(['select_tree']),
         methods:{
             onChange(e) {
                 this.value = e.detail
@@ -98,6 +118,10 @@
             setvalue2(e){
                 console.log(e.detail);
                 this.value2 = e.detail
+            },
+            setvalue3(e){
+                console.log(e.detail);
+                this.value3 = e.detail
             },
             onClose(event) {
                 const { position, instance } = event.detail;
@@ -132,7 +156,14 @@
                 wx.switchTab({
                     url: `../main/main?id=${e.id}`
                 });
-            }
+            },
+            onClickNav({ detail = {} }) {
+                this.mainActiveIndex = detail.index || 0
+            },
+
+            onClickItem({ detail = {} }) {
+                this.activeId = this.activeId === detail.id ? null : detail.id;
+            },
         }
     }
 </script>

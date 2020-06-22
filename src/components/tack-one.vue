@@ -11,10 +11,10 @@
             <!-- <check-radius title="民族" @set-param="e=>submitData.minzu=e" :actions="minzuactions"></check-radius> -->
             <van-field :value="submitData.aae005" label="联系电话" placeholder="请输入手机号" error-message=" " @change="e=>submitData.aae005=e.detail"/>
             
-			<check-address title="户籍地址" @set-param="setaddress"></check-address>
+			<check-address title="户籍地址" :btn="true" @copy="copyData" @set-param="setaddress"></check-address>
             <van-field :value="submitData.aaa021" label="详细地址" placeholder="请填写详细地址" @change="e=>submitData.aaa021=e.detail"/>
 
-			<check-address title="常住地址" v-model="address_val" @set-param="e=>submitData.aac026=e"></check-address>
+			<check-address title="常住地址" :value1="address_val" :value2="address_val_two" @set-param="e=>submitData.aac026=e"></check-address>
             <van-field :value="submitData.aac028" label="详细地址" placeholder="请填写详细地址" @change="e=>submitData.aac028=e.detail"/>
             <van-field :value="submitData.abc003" label="户主名字" placeholder="请输入户主姓名" error-message=" " @change="e=>submitData.abc003=e.detail"/>
             <van-field :value="submitData.abc002" label="户主身份证号" placeholder="请输入户主身份证号" @change="e=>submitData.abc002=e.detail"/>
@@ -177,6 +177,7 @@
 					}
 				],
 				address_val:'',
+				address_val_two:'',
 
 			}
 		},
@@ -215,8 +216,13 @@
 			},
 			setaddress(e){
 				this.submitData.aac026=e.value
-				this.submitData.aac010=e.value
-				this.address_val = e.name
+				// this.submitData.aac010=e.value
+				// this.address_val = e.name
+			},
+			copyData(name){
+				this.submitData.aac010=this.submitData.aac026
+				this.address_val = name.value1
+				this.address_val_two = name.value2
 			}
 		},
     }

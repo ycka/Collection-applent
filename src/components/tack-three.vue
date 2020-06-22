@@ -12,9 +12,9 @@
             <view v-if="submitData.aat005=='1'">
                 <check-radius title="被调查人就业情况" @set-param="e=>submitData.aat006=e" :actions="ccs"></check-radius>
                 <view v-if="submitData.aat006=='1'">
-                    <check-radius title="就业单位" @set-param="e=>submitData.joblist=e" :actions="joblist"></check-radius>
+                    <check-radius title="就业形式" @set-param="e=>submitData.joblist=e" :actions="joblist"></check-radius>
                     <van-field required v-if="submitData.joblist=='4'" :value="submitData.mackelem" label="其他" placeholder="请填写答案" @change="e=>submitData.mackelem=e.detail"/>
-                    <van-field required :value="submitData.aat007" label="就业形式" placeholder="请输入内容" @change="e=>submitData.aat007=e.detail"/>
+                    <van-field required :value="submitData.aat007" label="就业单位" placeholder="请输入内容" @change="e=>submitData.aat007=e.detail"/>
                     <van-field required :value="submitData.aat009" label="职业（工种）" placeholder="请输入内容" @change="e=>submitData.aat009=e.detail"/>
                     <check-address title="单位详细地址" @set-param="e=>submitData.aat010=e.value"></check-address>
                     <check-radius title="是否签订劳动合同" @set-param="e=>submitData.aat011=e"></check-radius>
