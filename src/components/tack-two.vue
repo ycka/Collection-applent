@@ -19,7 +19,7 @@
                 <check-radius title="是否有组织劳务输出" @set-param="e=>submitData.aav007=e" actions="aav007"></check-radius>
                 <check-radius title="从事行业" @set-param="e=>submitData.aav008=e" actions="aav008"></check-radius>
                 <van-field top v-if="submitData.aav008=='4'" required :value="submitData.aav024" placeholder="请填写答案" @change="e=>submitData.aav024=e.detail"/>
-                <check-address title="转移就业地点" @set-param="setAdd"></check-address>
+                <check-address two title="转移就业地点" @set-param="setAdd"></check-address>
                 <check-picker title="转移就业时间" @set-param="e=>submitData.aav010=e"></check-picker>
 
                 <van-field :value="submitData.aav011" label="转移就业单位名称" placeholder="请输入内容" @change="e=>submitData.aav011=e.detail"/>
@@ -28,7 +28,7 @@
             <!-- 自主创业 -->
             <view v-if="submitData.aav005=='02'">
                 <van-field :value="submitData.aad002" label="创业项目名称" placeholder="请输入内容" @change="e=>submitData.aad002=e.detail"/>
-                <check-address title="创业项目地址" @set-param="setAdd_two"></check-address>
+                <check-address two title="创业项目地址" @set-param="setAdd_two"></check-address>
                 <check-picker title="创业时间" @set-param="e=>submitData.aad001=e"></check-picker>
                 <check-radius title="创业项目所属行业" @set-param="e=>submitData.aad007=e" actions="aad007"></check-radius>
                 <van-field top v-if="submitData.aad007=='09'" required :value="submitData.aad009" placeholder="请填写答案" @change="e=>submitData.aad009=e.detail"/>
@@ -144,7 +144,7 @@
                 console.log(this.submitData)
             },
             setAdd(e){
-                this.submitData.aav009=e.value
+                this.submitData.aav009 = e.all
 				if(e.index==1){
 					this.address = e.name
 				}else{
@@ -152,7 +152,7 @@
 				}
             },
             setAdd_two(e){
-                this.submitData.aad003=e.value
+                this.submitData.aad003=e.all
 				if(e.index==1){
 					this.address = e.name
 				}else{

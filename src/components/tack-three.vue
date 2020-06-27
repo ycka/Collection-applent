@@ -17,7 +17,7 @@
 
                     <van-field required :value="submitData.aat008" label="就业单位" placeholder="请输入内容" @change="e=>submitData.aat008=e.detail"/>
                     <van-field required :value="submitData.aat009" label="职业（工种）" placeholder="请输入内容" @change="e=>submitData.aat009=e.detail"/>
-                    <check-address title="单位详细地址" @set-param="setAdd"></check-address>
+                    <check-address two title="单位详细地址" @set-param="setAdd"></check-address>
                     <check-radius title="是否签订劳动合同" @set-param="e=>submitData.aat011=e" actions="aat011"></check-radius>
                     <van-field required :value="submitData.aat012" label="现工作单位就业时间（月数）" placeholder="请输入数字" @change="e=>submitData.aat012=e.detail"/>
                 </view>
@@ -128,7 +128,7 @@
                 console.log(this.submitData)
             },
             setAdd(e){
-                this.submitData.aat010=e.value
+                this.submitData.aat010=e.all
 				if(e.index==1){
 					this.address = e.name
 				}else{

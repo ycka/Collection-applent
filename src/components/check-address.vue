@@ -11,8 +11,8 @@
 				<!-- <van-tag type="success" @tap.stop="copy(e)">复制</van-tag> -->
 			</view>
 		</van-cell>
-		<view style="height:10upx;"></view>
-        <van-cell :title="homename_three" @click="tow_show">
+		<view style="height:10upx;" v-if="!two"></view>
+        <van-cell :title="homename_three" @click="tow_show" v-if="!two">
 			<view v-if="btn" slot="right-icon">
 				<!-- <van-tag type="success" @tap.stop="copy(e)">复制</van-tag> -->
 			</view>
@@ -86,7 +86,10 @@
 				type:String,
 				default:''
             },
-            
+            two:{
+                type:Boolean,
+                default:false
+            }
 		},
 		watch:{
 			value1(e){
