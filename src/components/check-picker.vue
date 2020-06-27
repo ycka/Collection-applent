@@ -1,13 +1,13 @@
 vb<template>
     <view class="page-section" :style="{'margin-top':top?'10px':''}">
         
-        <view class="weui-cells__title">
-            <view class="required">*</view>
-            <view>{{title}}</view>
+        <view class="weui-cells__title f36">
+            <view class="required">* &nbsp;</view>
+            <view> {{title}}</view>
         </view>
-        <van-cell v-if="look" :title="title" :value="value"></van-cell>
+        <van-cell v-if="look" :title="value"></van-cell>
 
-        <van-cell v-else :title="title" @click="makeleave=true" :value="makeleavetext"></van-cell>
+        <van-cell v-else :title="makeleavetext" @click="makeleave=true"></van-cell>
         
         <van-action-sheet
         :show="makeleave"

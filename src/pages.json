@@ -31,6 +31,18 @@
 			}
 		}, 
 		{
+			"path": "pages/addUser/addUser",
+			"style": {
+				"navigationBarTitleText": "添加用户"
+			}
+		}, 
+		{
+			"path": "pages/userInfo/userInfo",
+			"style": {
+				"navigationBarTitleText": "用户信息"
+			}
+		}, 
+		{
 			"path": "pages/mockdata/mockdata",
 			"style": {
 				"navigationBarTitleText": "数据统计"
@@ -39,7 +51,9 @@
 		{
 			"path": "pages/systemdata/systemdata",
 			"style": {
-				"navigationBarTitleText": "系统管理"
+				"navigationBarTitleText": "系统管理",
+				"navigationBarBackgroundColor": "#5f70ff",
+				"navigationStyle": "custom"
 			}
 		}, 
 		{
@@ -97,7 +111,7 @@
 	},
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
-		"navigationBarBackgroundColor": "#0faeff",
+		"navigationBarBackgroundColor": "#1d659e",
 		"backgroundColor": "#fbf9fe",
 		"usingComponents": {
 			"van-icon": "/wxcomponents/vant/dist/icon/index",
@@ -123,7 +137,11 @@
 			"van-notice-bar": "/wxcomponents/vant/dist/notice-bar/index",
 			"van-tag":  "/wxcomponents/vant/dist/tag/index",
 			"van-popup": "/wxcomponents/vant/dist/popup/index",
-			"van-tree-select": "/wxcomponents/vant/dist/tree-select/index"
+			"van-tree-select": "/wxcomponents/vant/dist/tree-select/index",
+			"van-tree-select-two": "/wxcomponents/vant/dist/tree-select-two/index",
+			"van-tab": "/wxcomponents/vant/dist/tab/index",
+  			"van-tabs": "/wxcomponents/vant/dist/tabs/index"
 		}
 	}
+	
 }

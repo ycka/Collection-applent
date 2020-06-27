@@ -1,53 +1,40 @@
 <template>
     <view>
         <van-cell-group>
-            <van-field top :value="submitData.aac002" label="身份证号" placeholder="请输入18位身份证号" @change="e=>submitData.aac002=e.detail"/>
+            <van-field type="number" top :value="submitData.aac002" label="身份证号" placeholder="请输入18位身份证号" @change="e=>submitData.aac002=e.detail"/>
             <van-field :value="submitData.aac003" label="姓名" placeholder="请输入姓名" error-message=" " @change="e=>submitData.aac003=e.detail"/>
-            <check-radius title="性别" required @set-param="e=>submitData.aac004=e" :actions="actions"></check-radius>
+            <check-radius title="性别" required @set-param="e=>submitData.aac004=e" actions="aac004"></check-radius>
             <check-picker title="出生日期" @set-param="setold"></check-picker>
-			<check-picker title="年龄（自动计算）" :value="submitData.aac007" :look="true"></check-picker>
-            <!-- <van-cell title="年龄" :value="old"></van-cell> -->
-			<check-radius-some title="民族" required @set-param="e=>submitData.aac005=e"></check-radius-some>
-            <!-- <check-radius title="民族" @set-param="e=>submitData.minzu=e" :actions="minzuactions"></check-radius> -->
+			<check-picker title="年龄（根据出生日期计算）" :value="submitData.aac007" :look="true"></check-picker>
+			<check-radius-some title="民族" required @set-param="e=>submitData.aac005=e" actions="aac005"></check-radius-some>
             <van-field :value="submitData.aae005" label="联系电话" placeholder="请输入手机号" error-message=" " @change="e=>submitData.aae005=e.detail"/>
             
-			<check-address title="户籍地址" :btn="true" @copy="copyData" @set-param="setaddress"></check-address>
-            <van-field :value="submitData.aaa021" label="详细地址" placeholder="请填写详细地址" @change="e=>submitData.aaa021=e.detail"/>
+			<check-address title="户籍地址" @set-param="setaddress"></check-address>
+            <van-field :value="submitData.aaa021" top placeholder="请填写详细地址" @change="e=>submitData.aaa021=e.detail"/>
 
-			<check-address title="常住地址" :value1="address_val" :value2="address_val_two" @set-param="e=>submitData.aac026=e"></check-address>
-            <van-field :value="submitData.aac028" label="详细地址" placeholder="请填写详细地址" @change="e=>submitData.aac028=e.detail"/>
+			<check-address title="常住地址" btn @fuzhi="fzfunc" :value1="address_val" :value2="address_val_two" @set-param="e=>setdddress_two"></check-address>
+            <van-field :value="submitData.aac028" top placeholder="请填写详细地址" @change="e=>submitData.aac028=e.detail"/>
             <van-field :value="submitData.abc003" label="户主名字" placeholder="请输入户主姓名" error-message=" " @change="e=>submitData.abc003=e.detail"/>
             <van-field :value="submitData.abc002" label="户主身份证号" placeholder="请输入户主身份证号" @change="e=>submitData.abc002=e.detail"/>
-            <check-radius title="本人与户主关系" @set-param="e=>submitData.aac09w=e" :actions="fromaction"></check-radius>
-            <check-radius title="是否为13-15周岁人员" @set-param="e=>submitData.aac056=e" :actions="yearactions"></check-radius>
+            <check-radius title="本人与户主关系" @set-param="e=>submitData.aac09w=e" actions="aac09w"></check-radius>
+            <check-radius title="是否为13-15周岁人员" @set-param="e=>submitData.aac056=e" actions="aac056"></check-radius>
             <van-field top v-if="submitData.aac056=='1'" :value="submitData.aac057" label="现就读学校" placeholder="请输入内容" required @change="e=>submitData.aac057=e.detail"/>
-            <check-radius title="文化程度" @set-param="e=>submitData.aac011=e" :actions="aactions"></check-radius>
-            <van-field top v-if="submitData.aac011=='3'" :value="submitData.stname" label=" " placeholder="文化水平" required @change="e=>submitData.stname=e.detail"/>
-            <check-radius title="健康状况" @set-param="e=>submitData.aac033=e" :actions="bactions"></check-radius>
-            <van-field top v-if="submitData.aac033=='3'" :value="submitData.haname" label=" " placeholder="健康状况" required @change="e=>submitData.haname=e.detail"/>
-            <check-radius title="户籍性质" @set-param="hj" :actions="cactions"></check-radius>
+            <check-radius title="文化程度" @set-param="e=>submitData.aac011=e" actions="aac011"></check-radius>
+            <van-field top v-if="submitData.aac011=='90'" :value="submitData.aac013" label=" " placeholder="文化水平" required @change="e=>submitData.aac013=e.detail"/>
+            <check-radius title="健康状况" @set-param="e=>submitData.aac033=e" actions="aac033"></check-radius>
+            <van-field top v-if="submitData.aac033=='9'" :value="submitData.aac034" label=" " placeholder="健康状况" required @change="e=>submitData.aac034=e.detail"/>
+            <check-radius title="户籍性质" @set-param="hj" actions="aac009"></check-radius>
             
-			<van-field top v-if="submitData.aac009=='3'" :value="submitData.huname" label=" " placeholder="户籍性质" required @change="e=>submitData.huname=e.detail"/>
+			<van-field top v-if="submitData.aac009=='90'" :value="submitData.aac058" label=" " placeholder="户籍性质" required @change="e=>submitData.aac058=e.detail"/>
 		
-			<!-- <van-field label="是否享受政府扶持政策（可多选）" :ob="false"/> -->
-			
-			<view class="page-section"> 
-				<view class="weui-cells__title">
-					<view class="required">*</view>
-					<view class="f36">是否享受政府扶持政策（可多选）</view>
-				</view>
-				<view class="radio_some_top"></view>
-				<van-checkbox-group :value="result" @change="checkchange" class="f36">
-					<van-checkbox name="ca" shape="square">公益性岗位（乡村公益性岗位）</van-checkbox>
-					<van-checkbox name="cb" shape="square">灵活就业人员社保补贴</van-checkbox>
-					<van-checkbox name="cc" shape="square">居民最低生活保障（低保）</van-checkbox>
-					<van-checkbox name="cd" shape="square">创业担保贷款（小微贷）</van-checkbox>
-				</van-checkbox-group>  
-            </view>	
+			<check-checkbox title="是否享受政府扶持政策（可多选）" @set-param="e=>submitData.aac024=e" actions="aac024"></check-checkbox>
         </van-cell-group>
         <!-- <view style="width:100%;background:#fff;padding:20upx;">
             <button type="primary" plain="true" style="width:70%;margin:0 auto;" @tap="cons">按钮</button>
         </view> -->
+		<view class="center-clomn mt">
+			<van-button plain type="info" @tap="tonext">下一页</van-button>
+		</view>
     </view>
 </template>
 
@@ -57,11 +44,12 @@
 	import checkAddress from './check-address'
 	import vanField from './van-field'
 	import checkRadiusSome from './check-radius-some'
+	import checkCheckbox from './check-checkbox'
+	import { mapState } from 'vuex' 
     export default {
-        components:{checkRadius,checkPicker,checkAddress,vanField,checkRadiusSome},
+        components:{checkRadius,checkPicker,checkAddress,vanField,checkRadiusSome,checkCheckbox},
         data(){
 			return{
-				result: ['ca', 'cb'],
 				// 提交数据
 				submitData:{
 					aac002:'',
@@ -83,118 +71,39 @@
 					aac011:'',
 					aac033:'',
 					aac009:'',
-					stname:'',
-					haname:'',
-					huname:'',
+					aac013:'',
+					aac034:'',
+					aac058:'',
 					aac024:''
 				},
-				// 性别
-				sexshow:false,
-				sexname:'',
-				actions: [
-					{
-						name: '男',
-						value:'1'
-					},
-					{
-						name: '女',
-						value:'2'
-					}
-				],
-				aactions: [
-					{
-						name: '博士研究生',
-						value:'1'
-					},
-					{
-						name: '硕士研究生',
-						value:'2'
-					},
-					{
-						name: '其他',
-						value:'3'
-					}
-				],
-				bactions: [
-					{
-						name: '健康或良好',
-						value:'1'
-					},
-					{
-						name: '一般或较弱',
-						value:'2'
-					},
-					{
-						name: '其他',
-						value:'3'
-					}
-				],
-				cactions: [
-					{
-						name: '农村户口',
-						value:'1'
-					},
-					{
-						name: '非农业户口',
-						value:'2'
-					},
-					{
-						name: '其他',
-						value:'3'
-					}
-				],
-				// 岁数
-				old:'',
-				// 民族
-				minzuactions:[
-					{
-						name: '1-汉族',
-						value:'1'
-					},
-					{
-						name: '2-蒙古族',
-						value:'2'
-					}
-				],
-				fromaction:[
-					{
-						name: '父母',
-						value:'1'
-					},
-					{
-						name: '子女',
-						value:'2'
-					}
-				],
-				yearactions:[
-					{
-						name: '是',
-						value:'1'
-					},
-					{
-						name: '否',
-						value:'2'
-					}
-				],
+				
 				address_val:'',
 				address_val_two:'',
+				//临时地址
+				address:'',
+				address_two:''
 
 			}
 		},
+		mounted(){
+			// let data = Object.assign({},this.submitDefaultData,this.submitData)
+			// this.$store.commit('set_submitDefaultData',{key:'sub1',data:data})
+		},
+		
+		computed: mapState(['select_tree']),
 		methods:{
+			tonext(){
+				this.$store.dispatch('submitall',{key:'1',data:this.submitData}).then(e=>{
+					if(this.huji!=='10'){
+						uni.navigateTo({url: '../countryside/countryside'});
+					}else{
+						uni.navigateTo({url: '../city/city'});
+					}
+				})
+			},
 			cons(){
                 console.log(this.submitData)
             },
-			// abc(e){
-			// 	let da = e.detail.value
-            //     console.log(da)
-			// 	this.submitData.as = da.join(',')
-			// },
-			checkchange(e){
-				this.result = e.detail
-				console.log(this.result)
-				this.submitData.aac024 = this.result.join(',')
-			},
 			// 年龄确定
 			setold(da){
                 this.submitData.aac006=da
@@ -216,13 +125,25 @@
 			},
 			setaddress(e){
 				this.submitData.aac026=e.value
-				// this.submitData.aac010=e.value
-				// this.address_val = e.name
+				if(e.index==1){
+					this.address = e.name
+				}else{
+					this.address_two = e.name
+				}
 			},
-			copyData(name){
+			setdddress_two(e){
+				this.submitData.aac010=e.value
+				if(e.index==1){
+					this.address = e.name
+				}else{
+					this.address_two = e.name
+				}
+			},
+			fzfunc(){
+				console.log(111)
 				this.submitData.aac010=this.submitData.aac026
-				this.address_val = name.value1
-				this.address_val_two = name.value2
+				this.address_val = this.address
+				this.address_val_two = this.address_two
 			}
 		},
     }

@@ -18,16 +18,44 @@
                         <van-tree-select
                         :items="select_tree"
                         :main-active-index="mainActiveIndex"
+                        :mainActiveIndex_two="mainActiveIndex_two"
                         :active-id="activeId"
                         @click-nav="onClickNav"
                         @click-item="onClickItem"
+                        @click-nav-two="onClickNav_two"
                         />
                     </view>
+                    <view style="display:flex;padding:30upx 10upx 10upx 10upx;background:#fff;border-top:2upx solid #ebebeb;">
+                        <view style="width:200upx;"><van-button icon="brush-o" type="default" size="large" @tap="reset">重置</van-button></view>
+                        <view style="flex:1;padding-left:10upx;"><van-button type="info" size="large" @tap="sub">确定</van-button></view>
+                    </view>
                 </van-dropdown-item>
-                <van-dropdown-item id="item2" v-model="value2" :options="option2" @change="setvalue2" />
-                <van-dropdown-item id="item1" title="更多" v-model="value1" @change="setvalue1" >
-                    <view>
-                        自定义
+                <van-dropdown-item id="item2" v-model="value2" :options="option2" @change="setvalue2"/>
+                <van-dropdown-item id="item3" title="更多" v-model="value1" @change="setvalue1" >
+                    <view style="padding:40upx;max-height:440upx;overflow:auto;">
+                        <h3 style="padding:40upx 0;">性别</h3>
+                        <view>
+                            <van-button style="margin-right:40upx;" :type="submitData.sex==2?'default':'info'" @tap="submitData.sex=1" size="small">男</van-button>
+                            <van-button :type="submitData.sex==1?'default':'info'" @tap="submitData.sex=2" size="small">女</van-button>
+                        </view>
+                        <h3 style="padding:40upx 0;">年龄</h3>
+                        <view>
+                            <van-button style="margin-right:40upx;" :type="submitData.age==2?'default':'info'" @tap="submitData.age=1" size="small">13-15周岁人员</van-button>
+                            <van-button :type="submitData.age==1?'default':'info'" @tap="submitData.age=2" size="small">15岁以上</van-button>
+                        </view>
+                        <h3 style="padding:40upx 0;">户口性质</h3>
+                        <view class="btn-groups">
+                            <van-button :type="submitData.hukou!==1?'default':'info'" @tap="submitData.hukou=1" size="small">农村户口</van-button>
+                            <van-button :type="submitData.hukou!==2?'default':'info'" @tap="submitData.hukou=2" size="small">非农村户口</van-button>
+                            <van-button :type="submitData.hukou!==3?'default':'info'" @tap="submitData.hukou=3" size="small">居民户口</van-button>
+                            <van-button :type="submitData.hukou!==4?'default':'info'" @tap="submitData.hukou=4" size="small">港澳台人员</van-button>
+                            <van-button :type="submitData.hukou!==5?'default':'info'" @tap="submitData.hukou=5" size="small">外籍人员</van-button>
+                            <van-button :type="submitData.hukou!==6?'default':'info'" @tap="submitData.hukou=6" size="small">其他</van-button>
+                        </view>
+                        <view style="display:flex;padding:30upx 10upx 10upx 10upx;background:#fff;border-top:2upx solid #ebebeb;">
+                            <view style="width:200upx;"><van-button icon="brush-o" type="default" size="large" @tap="reset_on">重置</van-button></view>
+                            <view style="flex:1;padding-left:10upx;"><van-button type="info" size="large" @tap="sub_on">确定</van-button></view>
+                        </view>
                     </view>
                 </van-dropdown-item>
                 <van-dropdown-item id="item2" v-model="value3" :options="option3" @change="setvalue3" />
@@ -98,7 +126,16 @@
                 iscode:false,
                 mainActiveIndex:0,
                 activeId: null,
+                mainActiveIndex_two:0,
+                submitData:{
+                    sex:1,
+                    age:1,
+                    hukou:1
+                }
             }
+        },
+        onLoad(){
+            this.$store.dispatch('getList',{})
         },
         computed: mapState(['select_tree']),
         methods:{
@@ -160,10 +197,32 @@
             onClickNav({ detail = {} }) {
                 this.mainActiveIndex = detail.index || 0
             },
+            onClickNav_two({ detail = {} }) {
+                this.mainActiveIndex_two = detail.index || 0
+            },
 
             onClickItem({ detail = {} }) {
                 this.activeId = this.activeId === detail.id ? null : detail.id;
             },
+            reset(){
+                this.mainActiveIndex = 0
+                this.mainActiveIndex_two = 0
+                this.activeId = null
+            },
+            sub(){
+                console.log(this.mainActiveIndex,this.mainActiveIndex_two,this.activeId)
+                this.selectComponent('#item1').toggle(false);
+            },
+            sub_on(){
+                this.selectComponent('#item3').toggle(false);
+            },
+            reset_on(){
+                this.submitData={
+                    sex:1,
+                    age:1,
+                    hukou:1
+                }
+            }
         }
     }
 </script>

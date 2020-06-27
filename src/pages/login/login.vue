@@ -6,24 +6,24 @@
 		<view class="login_body">
 			<van-cell-group>
 				<van-fields
-					label="账户类别"
 					readonly
 					:value="selectName"
 				>
 				<view slot="left-icon" style="margin-right:20rpx;">
 					<van-icon size="60rpx"  color="#00e5cb" name="friends" />
 				</view>
+				<view slot="label" style="width:140upx;">账户类别</view>
 				<view slot="right-icon" style="margin-right:20rpx;" @tap="selectOne">
 					<van-icon size="60rpx" name="arrow-down"/>
 				</view>
 				</van-fields>
 				<van-fields
-					:value="param.username"
+					:value="param.userId"
 					clearable
-					label="用户账户"
-					@change="e=>param.username=e.detail"
+					@change="e=>param.userId=e.detail"
 					bind:click-icon="onClickIcon"
 				>
+				<view slot="label" style="width:140upx;">用户账户</view>
 				<view slot="left-icon" style="margin-right:20rpx;">
 					<van-icon color="#00e5cb" size="60rpx" name="manager" />
 				</view>
@@ -32,10 +32,10 @@
 				<van-fields
 					:value="param.password"
 					:type="passwordType"
-					label="密码"
 					@change="e=>param.password=e.detail"
 					:border="false"
 				>
+				<view slot="label" style="width:140upx;">密码</view>
 				<view slot="left-icon" style="margin-right:20rpx;">
 					<van-icon size="60rpx" color="#00e5cb" name="lock" />
 				</view>
@@ -45,30 +45,30 @@
 				</van-fields>
 
 				<van-fields
-					:value="param.sms"
+					:value="param.verifyCode"
 					clearable
-					label="验证码"
 					use-button-slot
-					@change="e=>param.sms=e.detail"
+					@change="e=>param.verifyCode=e.detail"
 				>
+					<view slot="label" style="width:140upx;">验证码</view>
 					<view slot="left-icon" style="margin-right:20rpx;">
 						<van-icon size="60rpx" color="#00e5cb" name="photograph" />
 					</view>
 					<view slot="right-icon">
-						图片验证
+						<image @tap="shuaxin" style="width:150upx;display:block;" mode="widthFix" :src="img" ></image>
 					</view>
 					>
 				</van-fields>
 				<van-fields
 					custom-class="single"
-					:value="param.sms"
+					:value="param.verifyCode"
 					clearable
-					label="记住密码"
 					use-button-slot
 				>
+					<view slot="label" style="width:140upx;">记住密码</view>
 					<view slot="left-icon" style="margin-right:20rpx;">
 						<van-checkbox
-						:value="param.remember"
+						:value="remember"
 						checked-color="#00e5cb"
 						@change="onChange"
 						>
@@ -146,27 +146,31 @@
 				passwordType:'password',
 				positionTop: 0,
 				isDevtools: false,
+				img:'http://223.100.130.116:7171/ahiru/login/verifyCode',
 				param:{
-					username:'',
+					userId:'',
 					password:'',
-					sms:'',
-					select:'',
-					remember:false
+					verifyCode:'',
+					userType:'',
+					// remember:false,
+					loginTime:'',
+					location:''
 				},
+				remember:false,
 				selectName:'',
 				show: false,
 				actions: [
 				{
 					name: '选项1',
-					value:'1'
+					value:'01'
 				},
 				{
 					name: '选项2',
-					value:'2'
+					value:'02'
 				},
 				{
 					name: '选项3',
-					value:'3'
+					value:'03'
 					// subname: '副文本',
 					// openType: 'share',
 				},
@@ -176,6 +180,9 @@
 		computed: mapState(['forcedLogin']),
 		methods: {
 			...mapMutations(['login']),
+			shuaxin(){
+				this.img = this.img+'?id='+parseInt(Math.random()*100)
+			},
 			selectOne(){
 				this.show = true
 			},
@@ -183,7 +190,7 @@
 				console.log(`forget password`)
 			},
 			onChange(){
-				this.param.remember = !this.param.remember
+				this.remember = !this.remember
 			},
 			onClose() {
 				this.show = false
@@ -197,7 +204,7 @@
 			},
 
 			onSelect(event) {
-				this.param.select = event.detail.value
+				this.param.userType = event.detail.value
 				this.selectName = event.detail.name
 				this.show = false
 				console.log(event.detail);
@@ -232,44 +239,29 @@
 				this.positionTop = uni.getSystemInfoSync().windowHeight - 100;
 			},
 			bindLogin() {
-				/**
-				 * 客户端对账号信息进行一些必要的校验。
-				 * 实际开发中，根据业务需要进行处理，这里仅做示例。
-				 */
-				if (this.account.length < 5) {
-					uni.showToast({
-						icon: 'none',
-						title: '账号最短为 5 个字符'
-					});
-					return;
-				}
-				if (this.password.length < 6) {
-					uni.showToast({
-						icon: 'none',
-						title: '密码最短为 6 个字符'
-					});
-					return;
-				}
+				this.$store.dispatch('login',this.param)
+
 				/**
 				 * 下面简单模拟下服务端的处理
 				 * 检测用户账号密码是否在已注册的用户列表中
 				 * 实际开发中，使用 uni.request 将账号信息发送至服务端，客户端在回调函数中获取结果信息。
 				 */
-				const data = {
-					account: this.account,
-					password: this.password
-				};
-				const validUser = service.getUsers().some(function(user) {
-					return data.account === user.account && data.password === user.password;
-				});
-				if (validUser) {
-					this.toMain(this.account);
-				} else {
-					uni.showToast({
-						icon: 'none',
-						title: '用户账号或密码不正确',
-					});
-				}
+				// const data = {
+				// 	account: this.account,
+				// 	password: this.password
+				// };
+				// const validUser = service.getUsers().some(function(user) {
+				// 	return data.account === user.account && data.password === user.password;
+				// });
+
+				// if (validUser) {
+				// 	this.toMain(this.account);
+				// } else {
+				// 	uni.showToast({
+				// 		icon: 'none',
+				// 		title: '用户账号或密码不正确',
+				// 	});
+				// }
 			},
 			oauth(value) {
 				uni.login({
@@ -309,8 +301,8 @@
 					});
 				}
 			},
-			toMain(userName) {
-				this.login(userName);
+			toMain(userId) {
+				this.login(userId);
 				/**
 				 * 强制登录时使用reLaunch方式跳转过来
 				 * 返回首页也使用reLaunch方式
@@ -323,6 +315,23 @@
 					uni.navigateBack();
 				}
 
+			},
+			getNowFormatDate() {
+				var date = new Date();
+				var seperator1 = "-";
+				var seperator2 = ":";
+				var month = date.getMonth() + 1;
+				var strDate = date.getDate();
+				if (month >= 1 && month <= 9) {
+					month = "0" + month;
+				}
+				if (strDate >= 0 && strDate <= 9) {
+					strDate = "0" + strDate;
+				}
+				var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+						+ " " + date.getHours() + seperator2 + date.getMinutes()
+						+ seperator2 + date.getSeconds();
+				return currentdate;
 			}
 		},
 		onReady() {

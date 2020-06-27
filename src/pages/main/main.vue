@@ -14,17 +14,15 @@
 			<view v-if="!hasLogin" class="hello">
 				<image class="top-banner" style="width:720upx;display:block;" mode="widthFix" src="/static/img/WechatIMG16.jpeg"></image>
 				<van-notice-bar
-				text="足协杯战线连续第2年上演广州德比战，上赛季半决赛上恒大以两回合5-3的总比分淘汰富力。"
-				backgroundColor="rgba(255,255,255,.5)"
-				color="#000"
+					text="足协杯战线连续第2年上演广州德比战，上赛季半决赛上恒大以两回合5-3的总比分淘汰富力。"
+					backgroundColor="rgba(255,255,255,.5)"
+					color="#000"
 				>
-				<view slot="left-icon">公告：</view>
+					<view slot="left-icon">公告：</view>
 				</van-notice-bar>
 				<style-ought></style-ought>
 				<tack-one @set-param="e=>huji=e"></tack-one>
-				<view class="center-clomn mt">
-					<van-button v-if="num<3"  plain type="info" @tap="tonext">下一页</van-button>
-				</view>
+				
 			</view>
 		</view>
 	</view>
@@ -47,17 +45,14 @@
 			}
 		},
 		methods:{
-			tonext(){
-				if(this.huji=='1'){
-					uni.navigateTo({url: '../countryside/countryside'});
-				}else{
-					uni.navigateTo({url: '../city/city'});
-				}
-			}
+			
 		},
 		computed: mapState(['forcedLogin', 'hasLogin', 'userName','person_id','styleClass']),
 		onShow(){
 			console.log('--传参数了--',this.person_id)
+			this.$store.dispatch('getData').then(e=>{
+				
+			})
 		},
 		onLoad() {
 			if (!this.hasLogin) {

@@ -2,40 +2,113 @@
 <template>
     <view class="content">
         <view class="view-group">
-            <view class="view-item" style="background:#fff;">
-                <view class="item-child">沈阳市</view>
-                <view class="item-child">今日</view>
-                <view class="item-child">本周</view>
-                <view class="item-child">近七天</view>
-                <view class="item-child">本月</view>
-                <view class="item-child">累计</view>
+            <view class="tj_bg">
+                <h3 style="color:#fff;padding:40upx;padding-bottom:0">沈阳市采集实时数据</h3>
+                <view class="tj">
+                    <view class="tj_title">截止2020-05-21 18:50:22 数据统计</view>
+                    <view class="tj_btn">刷新统计数据</view>
+                </view>
+                <view class="view-item tj">
+                    <view class="item-child">
+                        <view class="tj_t">34</view>
+                        <view class="tj_b">今天</view>
+                    </view>
+                    <view class="item-child">
+                        <view class="tj_t">34</view>
+                        <view class="tj_b">近七天</view>
+                    </view>
+                    <view class="item-child">
+                        <view class="tj_t">34</view>
+                        <view class="tj_b">本周</view>
+                    </view>
+                    <view class="item-child">
+                        <view class="tj_t">34</view>
+                        <view class="tj_b">本月</view>
+                    </view>
+                    <view class="item-child">
+                        <view class="tj_t">34</view>
+                        <view class="tj_b">累计</view>
+                    </view>
+                </view>
             </view>
-            <view class="view-item" v-for="(obj,idx) in tabledata" :key="idx">
-                <view class="item-child">{{obj.name}}</view>
-                <view class="item-child">{{obj.today}}</view>
-                <view class="item-child">{{obj.tos}}</view>
-                <view class="item-child">{{obj.seven}}</view>
-                <view class="item-child">{{obj.month}}</view>
-                <view class="item-child">{{obj.all}}</view>
-                <view class="item-child-position"> <van-icon name="arrow" /></view>
-            </view>
+            <van-panel title="进度统计表">
+                <view class="view-item" style="background:#fff;">
+                    <view class="item-child">沈阳市</view>
+                    <view class="item-child">今日</view>
+                    <view class="item-child">本周</view>
+                    <view class="item-child">近七天</view>
+                    <view class="item-child">本月</view>
+                    <view class="item-child">累计</view>
+                </view>
+                <view class="view-item" v-for="(obj,idx) in tabledata" :key="idx">
+                    <view class="item-child">{{obj.name}}</view>
+                    <view class="item-child">{{obj.today}}</view>
+                    <view class="item-child">{{obj.tos}}</view>
+                    <view class="item-child">{{obj.seven}}</view>
+                    <view class="item-child">{{obj.month}}</view>
+                    <view class="item-child">{{obj.all}}</view>
+                    <view class="item-child-position"> <van-icon name="arrow" /></view>
+                </view>
+            </van-panel>
+            
             <view class="view-item">
                 <view class="btn">查看更多</view>
             </view>
             <view class="qiun-charts">
                 <!-- 区域图 -->
-                <van-panel title="标题" desc="描述信息" status="状态">
+                <van-panel title="进度统计图">
+                    <van-tabs :active="actives" @change="onChanges">
+                        <van-tab title="区域" disabled></van-tab>
+                        <van-tab title="今天"></van-tab>
+                        <van-tab title="近七天"></van-tab>
+                        <van-tab title="本周"></van-tab>
+                        <van-tab title="本月"></van-tab>
+                        <van-tab title="累计"></van-tab>
+                    </van-tabs>
                     <canvas canvas-id="canvasRing" id="canvasRing" class="charts" @touchstart="touchRing" style="height:500upx;"></canvas>
                 </van-panel>
                 
             </view>
-            <div class="qiun-charts">
-                <!-- 柱状图 -->
-                <van-panel title="标题" desc="描述信息" status="状态">
+            <view class="qiun-charts">
+                <!-- 区域图 -->
+                <van-panel title="位置地图">
+                    <view class="view-item">
+                        <view class="item-child">采集人</view>
+                        <view class="item-child">今日</view>
+                        <view class="item-child">本周</view>
+                        <view class="item-child">近七天</view>
+                        <view class="item-child">本月</view>
+                        <view class="item-child">累计</view>
+                    </view>
+                    <view class="view-item">
+                        <view class="item-child">小张</view>
+                        <view class="item-child">1</view>
+                        <view class="item-child">22</view>
+                        <view class="item-child">77</view>
+                        <view class="item-child">213</view>
+                        <view class="item-child">7865</view>
+                    </view>
+                    <map
+                        id="map"
+                        :longitude="longitude"
+                        :latitude="latitude"
+                        scale="14"
+                        :controls="controls"
+                        :markers="markers"
+                        @markertap="markertap"
+                        show-location
+                        class="mapheight"
+                    ></map>
+                </van-panel>
+                
+            </view>
+            <!-- 柱状图 -->
+            <!-- <div class="qiun-charts">
+                <van-panel title="标题">
                     <canvas canvas-id="canvasColumn" id="canvasColumn" class="charts" @touchstart="touchColumn" style="height:500upx;"></canvas>
                 </van-panel>
                 
-            </div>
+            </div> -->
         </view>
     </view>
 </template>
@@ -48,6 +121,11 @@
     export default {
         data(){
             return{
+                markers: [],
+                latitude: 40.013305,  //纬度
+            　　 longitude: 118.685713,  //经度
+        　　　　　　//scale：5，//最小数，缩放范围最大，可见程度最大
+        　　　　　　//scale：18，//最大数，缩放范围最小，可见程度最小
                 tabledata:[
                     {
                         name:'和平区',
@@ -76,7 +154,8 @@
                 ],
                 cWidth: "", //宽度
                 cHeight: "", //高度
-                pixelRatio: 1 //设备像素比
+                pixelRatio: 1, //设备像素比
+                actives:1
             }
         },
         onLoad() {
@@ -96,6 +175,14 @@
         },
   
         methods: {
+            markertap(e) {
+                console.log(e)
+                // if(this.clickType==0){
+                //     this.clickType = 1
+                //     this.opendetail( this.listdata[e.mp.markerId])
+                // }
+            },
+            onChanges(){},
             showRing(canvasId) {
 				var chartData = {
 					series :[{
@@ -162,7 +249,7 @@
             // 柱状图开始
 
             showColumn(){
-            canvaColumn=new uCharts({
+                canvaColumn=new uCharts({
                 canvasId: "canvasColumn",
                 type: 'column',
                 legend:true,
@@ -215,18 +302,104 @@
                             // }
                         });
             },
+            onChange(event) {
+                wx.showToast({
+                    title: `切换到标签 ${event.detail.name}`,
+                    icon: 'none',
+                });
+            },
         },
         mounted() {
             this.showRing('canvasRing')
             this.showColumn();
+            uni.setNavigationBarTitle({
+                title: '沈阳市采集实时数据'
+            })
+
+
+            let sely = this
+            //获取定位
+            wx.getLocation({
+                type: 'wgs84',
+                success(res) {
+                    let {longitude,latitude} = res;
+                    console.log({longitude,latitude})
+                    sely.longitude = res.longitude
+                    sely.latitude = res.latitude
+                    sely.markers.push({
+                        iconPath: `/static/img/bar.png`,
+                        id: 1,
+                        latitude: latitude,
+                        longitude: longitude,
+                        width: 60,
+                        height: 60
+                    })
+                },
+                fail(){
+                wx.showModal({
+                    title: '温馨提示',
+                    content: '获取定位失败，请前往设置打开定位权限',
+                    confirmText: '设置',
+                    success(res) {
+                        if (res.confirm) {
+                            wx.openSetting({
+                                success: function (res) {
+                                    if (res.authSetting["scope.userLocation"]) {
+                                        wx.getLocation({
+                                            type: 'wgs84',
+                                            success(res) {
+                                                let {longitude,latitude} = res;
+                                                sely.longitude = res.longitude
+                                                sely.latitude = res.latitude
+                                            }
+                                        })
+                                    }else{
+                                        wx.navigateBack({
+                                            delta: 1
+                                        })
+                                    }
+                                }
+                            })
+                        } else if (res.cancel) {
+                            wx.navigateBack({
+                                delta: 1
+                            })
+                        }
+                    }
+                })
+                }
+            })
+
+
+
         },
     }
 </script>
 
 <style scoped lang="scss">
+    .tj_bg{
+        width:750upx;
+        margin:0 0 20upx 0;
+        background-image: -webkit-linear-gradient(top, #1d659e, #aac5d6); 
+    }
+    .tj{
+        padding:40upx;
+        padding-top:0;
+        width:100%;
+        display:flex;
+        justify-content:space-between;
+        color:rgba(255,255,255,0.7);
+        font-size:24upx;
+        box-sizing:border-box;
+        .tj_title{
+
+        }
+        .tj_btn{
+        }
+    }
     .qiun-charts{
         width:100%;
-        height:650upx;
+        height:750upx;
     }
     .view-group{
         display:flex;
@@ -235,6 +408,7 @@
         width:750upx;
         flex-direction:column;
         .view-item{
+            font-size:32upx;
             position:relative;
             display: flex;
             flex-direction:row;
@@ -246,7 +420,7 @@
             height:100upx;
             padding:0 20upx;
             line-height:100upx;
-            margin:10upx 0;
+            margin:10upx auto;
             border-radius: 10upx;
             .item-child-position{
                 position:absolute;
@@ -261,5 +435,25 @@
                 color:#505050;
             }
         }
+        .view-item.tj{
+            width:680upx;
+            background:#fff;
+            margin:20upx auto;
+            line-height:70upx;
+            height:180upx;
+            .tj_t{
+                color:#6fc1a0;
+                font-size:42upx;
+            }
+            .tj_b{
+                color:#505050;
+                font-size:24upx;
+            }
+        }
+    }
+    .mapheight{
+      height: 750upx;
+      width: 730upx;
+      margin:20upx auto;
     }
 </style>

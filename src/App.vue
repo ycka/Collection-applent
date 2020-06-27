@@ -1,10 +1,65 @@
 <script>
 	export default {
+		data(){
+			return{
+				param:{
+					longitude:'',
+					latitude:''
+				}
+			}
+		},
 		onLaunch: function() {
 			console.log('App Launch');
 		},
 		onShow: function() {
 			console.log('App Show');
+
+            let sely = this
+            //获取定位
+            wx.getLocation({
+                type: 'wgs84',
+                success(res) {
+                    let {longitude,latitude} = res;
+                    console.log({longitude,latitude})
+                    sely.param.longitude = res.longitude
+					sely.param.latitude = res.latitude
+					sely.$store.dispatch('location',sely.param)
+                },
+                fail(){
+                wx.showModal({
+                    title: '温馨提示',
+                    content: '获取定位失败，请前往设置打开定位权限',
+                    confirmText: '设置',
+                    success(res) {
+                        if (res.confirm) {
+                            wx.openSetting({
+                                success: function (res) {
+                                    if (res.authSetting["scope.userLocation"]) {
+                                        wx.getLocation({
+                                            type: 'wgs84',
+                                            success(res) {
+                                                let {longitude,latitude} = res;
+                                                sely.param.longitude = res.longitude
+												sely.param.latitude = res.latitude
+												sely.$store.dispatch('location',sely.param)
+                                            }
+                                        })
+                                    }else{
+                                        wx.navigateBack({
+                                            delta: 1
+                                        })
+                                    }
+                                }
+                            })
+                        } else if (res.cancel) {
+                            wx.navigateBack({
+                                delta: 1
+                            })
+                        }
+                    }
+                })
+                }
+            })
 		},
 		onHide: function() {
 			console.log('App Hide');
@@ -168,7 +223,7 @@
 		margin:60upx 0 0 0;
         .weui-cells{
             border-bottom: 1px solid #ebedf0;
-            padding: 20upx 32upx 10px 0;
+            padding: 20upx 32upx 20upx 0;
             background:#fff;
             border-radius: 10upx;
             overflow:hidden;
@@ -251,7 +306,7 @@
 				}
 			}
 		}
-		.radio:nth-of-type(2){
+		van-radio:nth-of-type(2){
 			border-left:0;
 		}
 		
@@ -281,6 +336,7 @@
 			// border:1upx solid #fff;
 			padding: 20rpx 32rpx 10px 0!important;
 			border-top:0;
+			min-height:100upx;
 			.van-cell__title{
 				padding-left:40upx;
 			}
@@ -312,9 +368,6 @@
 		padding:0 15upx 6upx 15upx;
 		box-sizing:border-box;
 	}
-	.f36{
-		font-size:36upx;
-	}
 	.placeholder{
 		font-size:36upx;
 		line-height:82upx;
@@ -338,8 +391,55 @@
 		}
 		
 	}
+	.style_one,.style_four{
+		.page-section{
+			color:#505050;
+			.weui-cells__title{
+				display:flex;
+				.required{
+					color:#505050;
+				}
+			}
+		}
+		.radius--radio_some{
+			color:#505050;
+			border:1upx solid #505050;
+			border-top:0;
+			.van-radio__label{
+				color:#505050;
+			}
+		}
+		.radius--radio_two{
+			color:#505050;
+			.van-radio__label{
+				color:#505050!important;
+			}
+		}
+		.radio-two{
+			van-radio{
+				color:#505050;
+				border:1upx solid #505050;
+			}
+			van-radio:nth-of-type(2){
+				border-left:0!important;
+			}
+		}
+		
+		.radio_some_top{
+			background:#505050;
+		}
+		.van-checkbox{
+			color:#505050;
+			border:1upx solid #505050;
+			border-top:0;
+			.van-checkbox__label{
+				color:#505050;
+			}
+		}
+		
+	}
 	.style_one{
-		background:#c4c4c4
+		background:#c4c4c4;
 	}
 	.style_two{
 		background:#091253;
@@ -351,10 +451,21 @@
 		background:#f0ba00
 	}
 
-.van-checkbox__icon {
-	border-color:#fff!important;
-}
-.van-radio__icon {
-	border-color:#fff!important;
-}
+	.van-checkbox__icon {
+		border-color:#fff!important;
+	}
+	.van-radio__icon {
+		border-color:#fff!important;
+	}
+	.btn-groups{
+		.van-button{
+			margin:20upx;
+		}
+	}
+	.required{
+		padding-right:10upx;
+	}
+	.f36{
+		font-size:36upx!important;
+	}
 </style>

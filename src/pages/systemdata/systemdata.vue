@@ -1,25 +1,36 @@
 <template>
-  <div class="panel">
-    <div class="toppanel">
-      <div class="avatarpanel">
-        <img class="avatar" :src="userIfo.avatarUrl" style="border:1px solid #ebebeb;"/>
-        <div class="name">登录用户：小明</div>
+  <div>
+    <view class="custom" :style="{'height':statusBarHeight+'px'}">
+      <view :style="{'width':'100%','height':(statusBarHeight-45)+'px'}"></view>
+      <view class="title">系统管理</view>
+    </view>
+
+    <div class="panel">
+      <div class="toppanel">
+        <div class="avatarpanel">
+          <img class="avatar" :src="yonghuwx.avatarUrl" style="border:1px solid #ebebeb;"/>
+          <div class="name">登录用户：小明</div>
+        </div>
+        <view style="width:100%;">
+            <van-cell title="账号管理" is-link 
+              link-type="navigateTo"
+              url="../user/user"
+            />
+            <van-cell 
+              title="密码设置" 
+              is-link 
+              link-type="navigateTo"
+              url="../reg/reg"
+          />
+            <van-cell title="系统设置" is-link />
+            <van-cell title="系统公告" is-link />
+            <van-cell title="提示信息" is-link />
+            <van-cell title="清理测试数据" is-link />
+        </view>
       </div>
-      <view style="width:100%;">
-          <van-cell title="账户管理" is-link />
-          <van-cell 
-            title="密码设置" 
-            is-link 
-            link-type="navigateTo"
-            url="../reg/reg"
-        />
-          <van-cell title="系统设置" is-link />
-          <van-cell title="系统公告" is-link />
-          <van-cell title="提示信息" is-link />
-          <van-cell title="清理测试数据" is-link />
-      </view>
     </div>
   </div>
+  
 </template>
 
 <script>
@@ -27,7 +38,39 @@
   export default {
     data () {
       return {
+        statusBarHeight:0,
+        yonghuwx:''
       }
+    },
+    onLoad: function (options) {
+      var that = this
+      uni.getSystemInfo({
+        success: function (res) {
+          console.log(res)
+          console.log(res.statusBarHeight)
+          that.statusBarHeight = res.statusBarHeight+45
+        },
+      })
+      uni.login({
+				provider: 'weixin',
+				success(loginRes) {
+					// 获取用户信息				
+					uni.getUserInfo({
+						provider: 'weixin',
+						success(infoRes) {				
+							that.yonghuwx = infoRes.userInfo
+							console.log(that.yonghuwx)
+            },
+            fail(err){
+              console.log(err)
+            }
+            
+					});
+        },
+        fail(err){
+          console.log(err)
+        }
+			});
     },
     computed: {
       userIfo(){
@@ -52,6 +95,17 @@
 </script>
 
 <style scoped lang='scss'>
+  .custom{
+    width: 100%;
+    background: #5f70ff;
+    .title{
+      text-align:left;
+      color:#fff;
+      line-height:45px;
+      text-indent: 20upx;
+      font-size:32upx;
+    }
+  }
   .panel {
     width: 100%;
     height: 100%;

@@ -1,13 +1,13 @@
 <template>
     <view>
-        <view class="page-section" :style="{'margin-top':top?'10px':''}">
+        <view class="page-section" :style="{'margin-top':top?'10rpx':''}">
             <view class="weui-cells__title" v-if="label.trim().length>0">
                 <view class="required" v-if="!required">*</view>
                 <view class="f36">{{label}}</view>
             </view>
             <view class="weui-cells weui-cells_after-title" v-if="ob">
                 <view class="weui-cell weui-cell_input">
-                    <input class="weui-input f36" :placeholder="placeholder" placeholder-class="placeholder" @input="changemap"/>
+                    <input class="weui-input f36" :placeholder="placeholder" :type="type" placeholder-class="placeholder" @input="changemap"/>
                 </view>
             </view>
         </view>
@@ -40,6 +40,10 @@
             ob:{
                 type:Boolean,
                 default:true
+            },
+            type:{
+                type:String,
+                default:'text'
             }
         },
         data(){
