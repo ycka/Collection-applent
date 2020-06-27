@@ -2,7 +2,7 @@
     <view class="content">
         <van-search
             :value="value"
-            label="地址"
+            label="姓名"
             placeholder="请输入搜索关键词"
             use-action-slot
             @change="onChange"
@@ -30,27 +30,27 @@
                         <view style="flex:1;padding-left:10upx;"><van-button type="info" size="large" @tap="sub">确定</van-button></view>
                     </view>
                 </van-dropdown-item>
-                <van-dropdown-item id="item2" v-model="value2" :options="option2" @change="setvalue2"/>
+                <van-dropdown-item id="item2" v-model="value2" :options="select_code['TIME']" @change="setvalue2"/>
                 <van-dropdown-item id="item3" title="更多" v-model="value1" @change="setvalue1" >
                     <view style="padding:40upx;max-height:440upx;overflow:auto;">
                         <h3 style="padding:40upx 0;">性别</h3>
                         <view>
-                            <van-button style="margin-right:40upx;" :type="submitData.sex==2?'default':'info'" @tap="submitData.sex=1" size="small">男</van-button>
-                            <van-button :type="submitData.sex==1?'default':'info'" @tap="submitData.sex=2" size="small">女</van-button>
+                            <van-button v-for="obj in select_code['AAC004']" :key="obj.value" style="margin-right:40upx;" :type="submitData.sex!==obj.value?'default':'info'" @tap="sexfunc(obj)" size="small">{{obj.text}}</van-button>
+                            <!-- <van-button :type="submitData.sex==1?'default':'info'" @tap="submitData.sex=2" size="small">女</van-button> -->
                         </view>
                         <h3 style="padding:40upx 0;">年龄</h3>
                         <view>
-                            <van-button style="margin-right:40upx;" :type="submitData.age==2?'default':'info'" @tap="submitData.age=1" size="small">13-15周岁人员</van-button>
-                            <van-button :type="submitData.age==1?'default':'info'" @tap="submitData.age=2" size="small">15岁以上</van-button>
+                            <van-button v-for="obj in select_code['IdCard15']" :key="obj.value" style="margin-right:40upx;" :type="submitData.ageFlg!==obj.value?'default':'info'" @tap="agefunc(obj)" size="small">{{obj.text}}</van-button>
+                            <!-- <van-button :type="submitData.ageFlg==1?'default':'info'" @tap="submitData.ageFlg=2" size="small">15岁以上</van-button> -->
                         </view>
                         <h3 style="padding:40upx 0;">户口性质</h3>
                         <view class="btn-groups">
-                            <van-button :type="submitData.hukou!==1?'default':'info'" @tap="submitData.hukou=1" size="small">农村户口</van-button>
-                            <van-button :type="submitData.hukou!==2?'default':'info'" @tap="submitData.hukou=2" size="small">非农村户口</van-button>
-                            <van-button :type="submitData.hukou!==3?'default':'info'" @tap="submitData.hukou=3" size="small">居民户口</van-button>
-                            <van-button :type="submitData.hukou!==4?'default':'info'" @tap="submitData.hukou=4" size="small">港澳台人员</van-button>
-                            <van-button :type="submitData.hukou!==5?'default':'info'" @tap="submitData.hukou=5" size="small">外籍人员</van-button>
-                            <van-button :type="submitData.hukou!==6?'default':'info'" @tap="submitData.hukou=6" size="small">其他</van-button>
+                            <van-button v-for="ob in select_code['AAC009']" :key="ob.value" :type="submitData.accountNature!==ob.value?'default':'info'" @tap="hujifunc(ob)" size="small">{{ob.text}}</van-button>
+                            <!-- <van-button :type="submitData.accountNature!==2?'default':'info'" @tap="submitData.accountNature=2" size="small">非农村户口</van-button>
+                            <van-button :type="submitData.accountNature!==3?'default':'info'" @tap="submitData.accountNature=3" size="small">居民户口</van-button>
+                            <van-button :type="submitData.accountNature!==4?'default':'info'" @tap="submitData.accountNature=4" size="small">港澳台人员</van-button>
+                            <van-button :type="submitData.accountNature!==5?'default':'info'" @tap="submitData.accountNature=5" size="small">外籍人员</van-button> -->
+                            <!-- <van-button :type="submitData.accountNature!==6?'default':'info'" @tap="submitData.accountNature=6" size="small">其他</van-button> -->
                         </view>
                         <view style="display:flex;padding:30upx 10upx 10upx 10upx;background:#fff;border-top:2upx solid #ebebeb;">
                             <view style="width:200upx;"><van-button icon="brush-o" type="default" size="large" @tap="reset_on">重置</van-button></view>
@@ -58,7 +58,7 @@
                         </view>
                     </view>
                 </van-dropdown-item>
-                <van-dropdown-item id="item2" v-model="value3" :options="option3" @change="setvalue3" />
+                <van-dropdown-item id="item2" v-model="value3" :options="select_code['REORDER']" @change="setvalue3" />
             </van-dropdown-menu>
             <!-- <van-button v-if="iscode" type="default" size="small" icon="ascending"></van-button>
             <van-button v-else type="default" size="small" icon="descending"></van-button> -->
@@ -104,41 +104,59 @@
                 selectData:[
                     {id:1,name:'黄渤',mssn:'210187199287672292'},
                 ],
-                option1: [
-                    { text: '市区', value: '0' },
-                    { text: '县', value: '1' },
-                    { text: '社区', value: '2' },
-                ],
-                option2: [
-                    { text: '当日', value: 'a' },
-                    { text: '本周', value: 'b' },
-                    { text: '七天内', value: 'c' },
-                    { text: '本月', value: 'd' }
-                ],
-                option3: [
-                    { text: '时间升序', value: '0' },
-                    { text: '时间降序', value: '1' },
-                ],
+                
                 value:'',
                 value1:'0',
-                value2:'a',
+                value2:'',
                 value3:'0',
                 iscode:false,
                 mainActiveIndex:0,
                 activeId: null,
                 mainActiveIndex_two:0,
+                demo:{
+                    "currentPage":"1",	//当前页   
+                    "pageSize":"10",     // 每页数据条数
+                    "areaId":"460031000000",        // 区域
+                    "timeCode":"1",      // 时间代码项
+                    "sex":"1",           // 性别
+                    "ageFlg":"1",        // 年龄（是否在13 -- 15岁）
+                    "accountNature":"2", // 户口性质
+                    "orderCode":"desc"     // 排序代码项
+			    },
                 submitData:{
+                    currentPage:'1',
+                    areaId:'',
+                    pageSize:'10',
                     sex:1,
-                    age:1,
-                    hukou:1
+                    ageFlg:1,
+                    accountNature:1,
+                    orderCode:'',
+                    timeCode:''
                 }
             }
         },
         onLoad(){
-            this.$store.dispatch('getList',{})
+            this.init()
         },
-        computed: mapState(['select_tree']),
+        computed: mapState(['select_code']),
         methods:{
+            init(){
+                this.$store.dispatch('getList',{})
+                this.value2 = this.select_code['TIME'][0].value
+                this.value3 = this.select_code['REORDER'][0].value
+                this.submitData.accountNature = this.select_code['AAC009'][0].value
+                this.submitData.sex = this.select_code['AAC004'][0].value
+                this.submitData.ageFlg = this.select_code['IdCard15'][0].value
+            },
+            sexfunc(obj){
+                this.submitData.sex = obj.value
+            },
+            hujifunc(e){
+                this.submitData.accountNature=e.value
+            },
+            agefunc(e){
+                this.submitData.ageFlg=e.value
+            },
             onChange(e) {
                 this.value = e.detail
             },
@@ -155,10 +173,12 @@
             setvalue2(e){
                 console.log(e.detail);
                 this.value2 = e.detail
+                this.submitData.timeCode = e.detail
             },
             setvalue3(e){
                 console.log(e.detail);
                 this.value3 = e.detail
+                this.submitData.orderCode = e.detail
             },
             onClose(event) {
                 const { position, instance } = event.detail;
@@ -219,8 +239,8 @@
             reset_on(){
                 this.submitData={
                     sex:1,
-                    age:1,
-                    hukou:1
+                    ageFlg:1,
+                    accountNature:1
                 }
             }
         }

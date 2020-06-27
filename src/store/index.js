@@ -58,7 +58,7 @@ const store = new Vuex.Store({
 			// console.log(data)
 			let res = {}
 			Object.keys(data).map(ob=>{
-				res[ob] = data[ob].map(e=>({name:e.aaa103,value:e.aaa102,title:e.aaa101,keys:e.aaa100}))
+				res[ob] = data[ob].map(e=>({name:e.aaa103,value:e.aaa102,title:e.aaa101,keys:e.aaa100,text:e.aaa103}))
 			})
 			state.select_code = res
 		},
