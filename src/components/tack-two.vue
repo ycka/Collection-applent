@@ -80,7 +80,7 @@
     import { mapState } from 'vuex' 
     export default {
         components:{checkRadius,checkPicker,checkAddress,vanField,checkCheckbox},
-        computed: mapState(['select_tree']),
+        computed: mapState(['select_tree','aac002']),
         data(){
 			return{
 				// 提交数据
@@ -125,12 +125,14 @@
                     aav011:'',
                     aav012:'',
                     aav014:'',
-                    aav021:''
+                    aav021:'',
+                    aac002:'',
                 },
 			}
-		},
+        },
 		methods:{
             next(){
+                this.submitData.aac002 = this.aac002
 				this.$store.dispatch('submitall',{key:'2',data:this.submitData}).then(e=>{
 					uni.navigateTo({url: '../train/train'});
 				})

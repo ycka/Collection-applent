@@ -34,7 +34,7 @@
     import { mapState } from 'vuex' 
     export default {
         components:{checkRadius,vanField,checkCheckbox},
-        computed: mapState(['select_tree']),
+        computed: mapState(['select_tree','aac002']),
         data(){
 			return{
 				// 提交数据
@@ -46,7 +46,8 @@
                     aas006:'',
                     aas009:'',
                     aas010:'',
-                    aas007:''
+                    aas007:'',
+                    aac002:'',
                 },
 			}
 		},
@@ -55,6 +56,7 @@
                 uni.navigateBack();
 			},
             toindex(){
+                this.submitData.aac002 = this.aac002
 				this.$store.dispatch('submitall',{key:'4',data:this.submitData}).then(e=>{
 					uni.reLaunch({url:`../main/main`})
 				})

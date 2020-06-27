@@ -1,4 +1,4 @@
-vb<template>
+<template>
     <view class="page-section" :style="{'margin-top':top?'10px':''}">
         
         <view class="weui-cells__title f36">
@@ -66,7 +66,7 @@ vb<template>
                 this.$emit('setParam',event.detail.value)
             },
             makeleavesubms(da){
-                this.$emit('setParam',da.detail)
+                this.$emit('setParam',this.getData(da.detail))
                 this.makeleavetext = this.getData(da.detail)
 				this.makeleave = false
 			},

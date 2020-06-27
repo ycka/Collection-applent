@@ -29,9 +29,13 @@ const store = new Vuex.Store({
 			sub2:{},
 			sub3:{},
 			sub4:{}
-		}
+		},
+		aac002:''
 	},
 	mutations: {
+		setaac002(state,param){
+			state.aac002 = param
+		},
 		set_submitDefaultData(state,param){
 			state.submitDefaultData[param.key] = param.data
 		},

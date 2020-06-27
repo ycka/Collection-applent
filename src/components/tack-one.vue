@@ -76,7 +76,8 @@
 					aac058:'',
 					aac024:'',
 					aaa020:'',
-					aac027:''
+					aac027:'',
+					aaz001:'1',//是否测试数据,0否1是
 				},
 				
 				address_val:'',
@@ -96,8 +97,9 @@
 		computed: mapState(['select_tree']),
 		methods:{
 			tonext(){
+				this.$store.commit('setaac002',this.submitData.aac002)
 				this.$store.dispatch('submitall',{key:'1',data:this.submitData}).then(e=>{
-					if(this.huji!=='10'){
+					if(this.submitData.aac009!=='10'){
 						uni.navigateTo({url: '../countryside/countryside'});
 					}else{
 						uni.navigateTo({url: '../city/city'});
