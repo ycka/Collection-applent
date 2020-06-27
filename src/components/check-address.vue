@@ -189,8 +189,11 @@
             sub(){
                 // this.next++
                 // console.log(this.caname.join('-'),this.address.join(','),2)
+                
                 this.homename_three = this.address.join('-')
-                this.$emit('setParam',{name:this.address.join('-'),value:this.caname.join(',')+','+this.subcity,index:2})
+                let para = this.caname[this.caname.length-1]
+                console.log(`-----para------`,para)
+                this.$emit('setParam',{all:this.text_city.join('')+''+this.address.join(''),name:this.address.join('-'),value:para,index:2})
                 this.homeshow_three = false
             },
             reset_city(){
@@ -201,7 +204,9 @@
                 // console.log(this.dizhi.join('-'),this.text_city.join(','),1)
                 this.homename = this.text_city.join('-')
                 this.subcity = this.dizhi.join(',')
-                this.$emit('setParam',{name:this.text_city.join('-'),value:this.subcity,index:1})
+                let para = this.dizhi[this.dizhi.length-1]
+                console.log(`-----para------`,para)
+                this.$emit('setParam',{all:this.text_city.join(''),name:this.text_city.join('-'),value:para,index:1})
                 this.homeshow = false
             },
 

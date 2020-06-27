@@ -74,11 +74,14 @@
 					aac013:'',
 					aac034:'',
 					aac058:'',
-					aac024:''
+					aac024:'',
+					aaa020:'',
+					aac027:''
 				},
 				
 				address_val:'',
 				address_val_two:'',
+				all:'',
 				//临时地址
 				address:'',
 				address_two:''
@@ -124,24 +127,30 @@
 				this.$emit('setParam',this.submitData.aac009)
 			},
 			setaddress(e){
-				this.submitData.aac026=e.value
+				this.submitData.aac020=e.value
 				if(e.index==1){
+					this.submitData.aac010 = e.all
 					this.address = e.name
 				}else{
+					this.submitData.aac010 = e.all
 					this.address_two = e.name
 				}
+				this.all = e.all
+				console.log(this.submitData.aac010)
 			},
 			setdddress_two(e){
-				this.submitData.aac010=e.value
+				this.submitData.aac027=e.value
 				if(e.index==1){
 					this.address = e.name
 				}else{
 					this.address_two = e.name
 				}
+				this.submitData.aac026 = e.all
 			},
 			fzfunc(){
 				console.log(111)
-				this.submitData.aac010=this.submitData.aac026
+				this.submitData.aac026 = this.all
+				this.submitData.aac027=this.submitData.aac020
 				this.address_val = this.address
 				this.address_val_two = this.address_two
 			}
