@@ -1,5 +1,6 @@
 <template>
     <view class="content">
+        <custom-header title="我的" child></custom-header>
         <van-search
             :value="value"
             label="地址"

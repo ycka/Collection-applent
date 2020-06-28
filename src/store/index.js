@@ -30,9 +30,13 @@ const store = new Vuex.Store({
 			sub3:{},
 			sub4:{}
 		},
-		aac002:''
+		aac002:'',
+		screenHeight:0
 	},
 	mutations: {
+		setHeight(state,param){
+			state.screenHeight = param
+		},
 		setaac002(state,param){
 			state.aac002 = param
 		},

@@ -1,5 +1,6 @@
 <template>
 	<view :class="[styleClass.style_is,'page_main']">
+		<custom-header title="添加用户" child></custom-header>
 		<view class="content_in" style="margin-top:0;">
 			<view v-if="!hasLogin" class="hello">
                 <style-ought></style-ought>

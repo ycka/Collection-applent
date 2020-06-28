@@ -1,5 +1,6 @@
 <template>
 	<view :class="[styleClass.style_is,'page_main']">
+		<custom-header title="数据采集"></custom-header>
 		<view class="content_in">
 			<view v-if="hasLogin" class="hello">
 				<view class="title">
@@ -55,6 +56,13 @@
 			})
 		},
 		onLoad() {
+			let self = this
+			uni.getSystemInfo({
+                success(res) {
+					let statusBarHeight = res.statusBarHeight+45
+					self.$store.commit('setHeight',statusBarHeight)
+                },
+            })
 			if (!this.hasLogin) {
 				uni.showModal({
 					title: '未登录',

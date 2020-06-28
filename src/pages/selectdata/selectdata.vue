@@ -1,5 +1,6 @@
 <template>
     <view class="content">
+        <custom-header title="数据查询"></custom-header>
         <van-search
             :value="value"
             label="姓名"
@@ -26,7 +27,7 @@
                         />
                     </view>
                     <view style="display:flex;padding:30upx 10upx 10upx 10upx;background:#fff;border-top:2upx solid #ebebeb;">
-                        <view style="width:200upx;"><van-button icon="brush-o" type="default" size="large" @tap="reset">重置</van-button></view>
+                        <view style="width:200upx;"><van-button icon="/static/img/cz.png" type="default" size="large" @tap="reset">重置</van-button></view>
                         <view style="flex:1;padding-left:10upx;"><van-button type="info" size="large" @tap="sub">确定</van-button></view>
                     </view>
                 </van-dropdown-item>
@@ -53,7 +54,7 @@
                             <!-- <van-button :type="submitData.accountNature!==6?'default':'info'" @tap="submitData.accountNature=6" size="small">其他</van-button> -->
                         </view>
                         <view style="display:flex;padding:30upx 10upx 10upx 10upx;background:#fff;border-top:2upx solid #ebebeb;">
-                            <view style="width:200upx;"><van-button icon="brush-o" type="default" size="large" @tap="reset_on">重置</van-button></view>
+                            <view style="width:200upx;"><van-button icon="/static/img/cz.png" type="default" size="large" @tap="reset_on">重置</van-button></view>
                             <view style="flex:1;padding-left:10upx;"><van-button type="info" size="large" @tap="sub_on">确定</van-button></view>
                         </view>
                     </view>

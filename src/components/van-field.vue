@@ -54,6 +54,7 @@
         methods:{
             changemap(e){
                 // console.log(e.detail.value)
+                console.log(this.$parent)
                 let obj = {}
                 obj.detail = e.detail.value
                 this.$emit('change',obj)

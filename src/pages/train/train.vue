@@ -1,5 +1,6 @@
 <template>
 	<view :class="[styleClass.style_is,'page_main']">
+		<custom-header title="其他调查" child></custom-header>
 		<view class="content_in">
 			<view class="hello">
 				<image class="top-banner" style="width:720upx;display:block;" mode="widthFix" src="/static/img/WechatIMG16.jpeg"></image>

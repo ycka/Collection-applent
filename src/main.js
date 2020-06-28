@@ -3,6 +3,8 @@ import App from './App'
 
 import store from './store'
 import http from './http'
+import customHeader from './components/custom-header'
+Vue.component('customHeader',customHeader)
 
 Vue.config.productionTip = false
 

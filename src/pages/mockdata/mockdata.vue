@@ -1,6 +1,7 @@
 
 <template>
     <view class="content">
+        <custom-header title="采集统计"></custom-header>
         <view class="view-group">
             <view class="tj_bg">
                 <h3 style="color:#fff;padding:40upx;padding-bottom:0">沈阳市采集实时数据</h3>
@@ -176,11 +177,18 @@
   
         methods: {
             markertap(e) {
-                console.log(e)
                 // if(this.clickType==0){
                 //     this.clickType = 1
                 //     this.opendetail( this.listdata[e.mp.markerId])
                 // }
+                this.markers.map(ob=>{
+                    if(ob.id==e.markerId){
+                        ob.iconPath =  `/static/img/map/a1.png`
+                    }else{
+                        ob.iconPath =  `/static/img/map/a2.png`
+                    }
+                    return ob
+                })
             },
             onChanges(){},
             showRing(canvasId) {
@@ -327,12 +335,20 @@
                     sely.longitude = res.longitude
                     sely.latitude = res.latitude
                     sely.markers.push({
-                        iconPath: `/static/img/bar.png`,
-                        id: 1,
+                        iconPath: `/static/img/map/a2.png`,
+                        id: 122,
                         latitude: latitude,
                         longitude: longitude,
-                        width: 60,
-                        height: 60
+                        width: 40,
+                        height: 40
+                    })
+                    sely.markers.push({
+                        iconPath: `/static/img/map/a2.png`,
+                        id: 124,
+                        latitude: latitude-5,
+                        longitude: longitude-5,
+                        width: 40,
+                        height: 40
                     })
                 },
                 fail(){

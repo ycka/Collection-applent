@@ -1,5 +1,6 @@
 <template>
 	<view class="content">
+		<custom-header title="系统登录" child></custom-header>
 		<view class="login_header">
 			劳动力资源信息采集系统
 		</view>

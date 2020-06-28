@@ -1,9 +1,6 @@
 <template>
   <div>
-    <view class="custom" :style="{'height':statusBarHeight+'px'}">
-      <view :style="{'width':'100%','height':(statusBarHeight-45)+'px'}"></view>
-      <view class="title">系统管理</view>
-    </view>
+    <custom-header color title="系统管理"></custom-header>
 
     <div class="panel">
       <div class="toppanel">
@@ -95,17 +92,7 @@
 </script>
 
 <style scoped lang='scss'>
-  .custom{
-    width: 100%;
-    background: #5f70ff;
-    .title{
-      text-align:left;
-      color:#fff;
-      line-height:45px;
-      text-indent: 20upx;
-      font-size:32upx;
-    }
-  }
+  
   .panel {
     width: 100%;
     height: 100%;

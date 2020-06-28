@@ -1,5 +1,6 @@
 <template>
     <div class="content">
+        <custom-header title="用户信息" child></custom-header>
         <view>
             用户信息
         </view>
