@@ -2,11 +2,11 @@
 	<view :class="[styleClass.style_is,'page_main']">
 		<custom-header title="添加用户" child></custom-header>
 		<view class="content_in" style="margin-top:0;">
-			<view v-if="!hasLogin" class="hello">
+			<view v-show="hasLogin" class="hello">
                 <style-ought></style-ought>
 				<tack-user @set-param="e=>huji=e"></tack-user>
 				<view class="center-clomn mt">
-					<van-button v-if="num<3"  plain type="info" @tap="tonext">提交</van-button>
+					<van-button plain type="info" @tap="tonext">提交</van-button>
 				</view>
 			</view>
 		</view>
@@ -25,7 +25,6 @@
 		},
 		data(){
 			return{
-				num:0,
 				huji:''
 			}
 		},

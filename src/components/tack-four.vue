@@ -9,7 +9,7 @@
             <check-radius title="技术等级" @set-param="e=>submitData.aas002=e" actions="aas002"></check-radius>
             <check-radius title="参加培训情况" @set-param="e=>submitData.aas003=e" actions="aas003"></check-radius>
             <check-radius title="想参加职业技能培训吗？" @set-param="e=>submitData.aas005=e" actions="aas005"></check-radius>
-            <view class="page-section" v-if="submitData.aas005=='1'"> 
+            <view class="page-section" v-show="submitData.aas005=='1'"> 
                 <van-field :value="submitData.aas006" label="想参加的工种1" placeholder="请填写答案" required @change="e=>submitData.aas006=e.detail"/>
                 <van-field :value="submitData.aas009" label="想参加的工种2" placeholder="请填写答案" required @change="e=>submitData.aas009=e.detail"/>
                 <van-field :value="submitData.aas010" label="想参加的工种3" placeholder="请填写答案" required @change="e=>submitData.aas010=e.detail"/>

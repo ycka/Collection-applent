@@ -5,9 +5,13 @@
             <view class="required">* &nbsp;</view>
             <view> {{title}}</view>
         </view>
-        <van-cell v-if="look" :title="value"></van-cell>
-
-        <van-cell v-else :title="makeleavetext" @click="makeleave=true"></van-cell>
+        <view v-show="look">
+            <van-cell :title="value"></van-cell>
+        </view>
+        <view v-show="!look">
+           <van-cell :title="makeleavetext" @click="makeleave=true"></van-cell>
+        </view>
+        
         
         <van-action-sheet
         :show="makeleave"

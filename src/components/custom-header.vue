@@ -2,8 +2,13 @@
     <view>
         <view :class="{'custom':true,actionv:color}" :style="{'height':screenHeight+'px','position':'fixed','top':0,'left':0,'z-index':9999}">
             <view :style="{'width':'100%','height':(screenHeight-45)+'px'}"></view>
-            <view v-if="!child" class="title_main">{{title}}</view>
-            <view v-else class="title_child"><van-icon v-if="!back" @tap="backs" size="18px" style="position:relative;top:10upx;" name="arrow-left" />{{title}}</view>
+            <view v-show="!child" class="title_main">{{title}}</view>
+            <view v-show="child" class="title_child">
+                <span>
+                    <van-icon @tap="backs" size="18px" style="position:relative;top:10upx;" name="arrow-left" :style="{'visibility':back?'hidden':'visile'}"/>
+                </span>
+                {{title}}
+            </view>
         </view>
         <view :class="{'custom':true,actionv:color}" :style="{'height':screenHeight+'px'}"></view>
     </view>

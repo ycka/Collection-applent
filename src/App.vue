@@ -468,4 +468,7 @@
 	.f36{
 		font-size:36upx!important;
 	}
+	.none{
+		display:none;
+	}
 </style>

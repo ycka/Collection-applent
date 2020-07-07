@@ -131,23 +131,26 @@
                     sex:1,
                     ageFlg:1,
                     accountNature:1,
-                    orderCode:'',
-                    timeCode:''
+                    orderCode:'desc',
+                    timeCode:'1'
                 }
             }
         },
         onLoad(){
             this.init()
         },
-        computed: mapState(['select_code']),
+        computed: mapState(['select_code','userInfo']),
         methods:{
             init(){
-                this.$store.dispatch('getList',{})
                 this.value2 = this.select_code['TIME'][0].value
                 this.value3 = this.select_code['REORDER'][0].value
+                this.submitData.orderCode = this.select_code['REORDER'][0].value
+                this.submitData.timeCode = this.select_code['TIME'][0].value
                 this.submitData.accountNature = this.select_code['AAC009'][0].value
                 this.submitData.sex = this.select_code['AAC004'][0].value
                 this.submitData.ageFlg = this.select_code['IdCard15'][0].value
+                this.submitData.areaId = this.userInfo['aaa020']
+                this.$store.dispatch('getList',this.submitData)
             },
             sexfunc(obj){
                 this.submitData.sex = obj.value

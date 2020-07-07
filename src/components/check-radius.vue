@@ -1,18 +1,21 @@
 <template>
     <view class="page-section" :style="{'margin-top':top?'10px':''}">
         <!-- <van-cell :title="title" @click="ccashow=true" required></van-cell> -->
-        <view class="weui-cells__title f36" v-if="title.trim().length>0">
+        <view class="weui-cells__title f36" v-show="action_select[0].title.length>0">
             <view class="required">* &nbsp;</view>
             <view class="f36"> {{action_select[0].title}}</view>
         </view>
         <view>
-            <van-radio-group v-if="action_select.length>2" v-model="radio" @change="onChange">
-                <view class="radio_some_top"></view>
-                <van-radio custom-class="radio_some" v-for="(obj,idx) in action_select" checked-color="var(--radio-checked-icon-color,#2589FF)" :name="obj.value" :key="idx" style="padding:10upx 0;">
-                    <span class="f36">{{obj.name}}</span>
-                </van-radio>
-            </van-radio-group>
-            <view v-else class="radio-two">
+            <view v-show="action_select.length>2">
+                <van-radio-group  v-model="radio" @change="onChange">
+                    <view class="radio_some_top"></view>
+                    <van-radio custom-class="radio_some" v-for="(obj,idx) in action_select" checked-color="var(--radio-checked-icon-color,#2589FF)" :name="obj.value" :key="idx" style="padding:10upx 0;">
+                        <span class="f36">{{obj.name}}</span>
+                    </van-radio>
+                </van-radio-group>
+            </view>
+            
+            <view v-show="action_select.length<=2" class="radio-two">
                 <van-radio-group v-model="radio" @change="onChange" class="center-clomn">
                     <van-radio custom-class="radio_two" v-for="(obj,idx) in action_select" checked-color="var(--radio-checked-icon-color,#2589FF)" :name="obj.value" :key="idx" style="padding:10upx 0;">
                         <span class="f36">{{obj.name}}</span>

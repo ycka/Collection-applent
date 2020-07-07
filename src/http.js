@@ -3,15 +3,17 @@ import store from './store'
 const host = "http://223.100.130.116:7171/ahiru"
 // const mshost = ""
 
-function get(url, data,header={}) {
+function get(url, data,header={'Cookie':store.state.sessionid}) {
+  console.log(url)
   return request( host + url, 'GET', data,header)
 }
 
 function post(url, data) {
+  console.log(url)
   return request( host + url, 'POST', data,{
     // 'content-type': 'application/x-www-form-urlencoded',
-    'content-type': 'application/json' 
-    // 'Cookie':'SESSION='+store.state.sessionid
+    'content-type': 'application/json' ,
+    'Cookie':store.state.sessionid
   })
 }
 
@@ -44,6 +46,7 @@ const http ={
 
 // function request(url, method, data, header = {"Cookie":"SESSION="+store.state.sessionid}) {
 function request(url, method, data,header={}) {
+  console.log(header)
   wx.showLoading({
     title: '加载中',
     mask: true
@@ -66,6 +69,25 @@ function request(url, method, data,header={}) {
           wx.hideLoading()
           resolve(res.data)
         }
+      },
+      fail: (data) => {
+        // 这里可以对请求超时之后。我们可以自定义的业务逻辑,这里只是简单举例
+          reject(data);
+            wx.hideLoading();
+            wx.showModal({
+                content: "请求超时...",
+                showCancel: false,
+                success: (res) => {
+                  // 重定向会首页
+                  wx.hideLoading()
+                  // wx.redirectTo({
+                  //     url: 'pages/home/home'
+                  // })
+        }
+            })
+      },
+      complete: (res) => {
+        wx.hideLoading();
       }
     })
   })

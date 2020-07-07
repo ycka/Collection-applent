@@ -12,6 +12,9 @@ const store = new Vuex.Store({
 		 */
 		forcedLogin: false,
 		hasLogin: false,
+		sessionid:'',
+		userInfo:{},
+		imgurl:'',
 		userName: "",
 		person_id:'',
 		styleClass:{
@@ -34,6 +37,14 @@ const store = new Vuex.Store({
 		screenHeight:0
 	},
 	mutations: {
+		set_userInfo(state,param){
+			Object.assign(state.userInfo,param)
+			console.log(state.userInfo)
+		},
+		set_sessionid(state,param){
+			state.sessionid = param.sessionid
+			state.imgurl = param.url
+		},
 		setHeight(state,param){
 			state.screenHeight = param
 		},
@@ -43,9 +54,8 @@ const store = new Vuex.Store({
 		set_submitDefaultData(state,param){
 			state.submitDefaultData[param.key] = param.data
 		},
-		login(state, userName) {
-			state.userName = userName || '新用户';
-			state.hasLogin = true;
+		login(state, param) {
+			state.hasLogin = param;
 		},
 		logout(state) {
 			state.userName = "";
@@ -115,7 +125,7 @@ const store = new Vuex.Store({
 				"accountNature":"2", // 户口性质
 				"orderCode":"desc"     // 排序代码项
 			}
-			let list = await http.post('/account/search/list',params)
+			let list = await http.post('/account/search/list',param)
 			console.log(list)
 		},
 		// 查询页面下钻
@@ -154,7 +164,7 @@ const store = new Vuex.Store({
 		async login(store,param){
 			console.log(param)
 			let res = await http.post('/login/check',param)
-			console.log(res)
+			return res
 		},
 		// 定位接口
 		async location(store,param){
@@ -162,6 +172,23 @@ const store = new Vuex.Store({
 			// console.log(res)
 			console.log(param)
 		},
+		// 验证码
+		verifyCode(store,param){
+			return new Promise((resolve, reject) => {
+				wx.request({
+					url:'http://223.100.130.116:7171/ahiru/login/verifyCode',
+					method:'get',
+					responseType:'arraybuffer',
+					success(res){
+						let img = 'data:image/png;base64,'+wx.arrayBufferToBase64(res.data);
+						let sessionid = res.header['Set-Cookie'];
+						store.commit('set_sessionid',{url:img,sessionid:sessionid})
+						resolve(img)
+					}
+				});
+			})
+			
+		}
 	}
 })
 

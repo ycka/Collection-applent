@@ -3,20 +3,23 @@
 		<view class="weui-cells__title f36">
             <view class="required">* &nbsp;</view>
             <view> {{title}}</view>
-			<view v-if="btn" @click="$emit('fuzhi')" style="text-decoration:underline;font-size:30upx;">点击可按[户籍地址]填入</view>
+			<view v-show="btn" @click="$emit('fuzhi')" style="text-decoration:underline;font-size:30upx;">点击可按[户籍地址]填入</view>
         </view>
 
         <van-cell :title="homename" @click="homeshow=true">
-			<view v-if="btn" slot="right-icon">
+			<view v-show="btn" slot="right-icon">
 				<!-- <van-tag type="success" @tap.stop="copy(e)">复制</van-tag> -->
 			</view>
 		</van-cell>
-		<view style="height:10upx;" v-if="!two"></view>
-        <van-cell :title="homename_three" @click="tow_show" v-if="!two">
-			<view v-if="btn" slot="right-icon">
-				<!-- <van-tag type="success" @tap.stop="copy(e)">复制</van-tag> -->
-			</view>
-		</van-cell>
+		<view style="height:10upx;" v-show="!two"></view>
+        <view v-show="!two">
+            <van-cell :title="homename_three" @click="tow_show">
+                <view v-show="btn" slot="right-icon">
+                    <!-- <van-tag type="success" @tap.stop="copy(e)">复制</van-tag> -->
+                </view>
+            </van-cell>
+        </view>
+        
         
 
         <!-- 地址 -->
@@ -39,7 +42,7 @@
 		:show="homeshow_three"
 		>
 			<!-- <template v-for="obj in next"> -->
-                <!-- <view v-if="obj==(next-1)" :key="obj"> -->
+                <!-- <view v-show="obj==(next-1)" :key="obj"> -->
                     <view style="display:flex;padding:30upx 10upx 10upx 10upx;justify-content:space-between;">
                         <van-button type="default" size="small" @tap="reset">取消</van-button>
                         <van-button type="default" size="small" @tap="sub">确定</van-button>

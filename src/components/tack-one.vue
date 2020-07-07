@@ -18,14 +18,25 @@
             <van-field :value="submitData.abc002" label="户主身份证号" placeholder="请输入户主身份证号" @change="e=>submitData.abc002=e.detail"/>
             <check-radius title="本人与户主关系" @set-param="e=>submitData.aac09w=e" actions="aac09w"></check-radius>
             <check-radius title="是否为13-15周岁人员" @set-param="e=>submitData.aac056=e" actions="aac056"></check-radius>
-            <van-field top v-if="submitData.aac056=='1'" :value="submitData.aac057" label="现就读学校" placeholder="请输入内容" required @change="e=>submitData.aac057=e.detail"/>
-            <check-radius title="文化程度" @set-param="e=>submitData.aac011=e" actions="aac011"></check-radius>
-            <van-field top v-if="submitData.aac011=='90'" :value="submitData.aac013" label=" " placeholder="文化水平" required @change="e=>submitData.aac013=e.detail"/>
-            <check-radius title="健康状况" @set-param="e=>submitData.aac033=e" actions="aac033"></check-radius>
-            <van-field top v-if="submitData.aac033=='9'" :value="submitData.aac034" label=" " placeholder="健康状况" required @change="e=>submitData.aac034=e.detail"/>
-            <check-radius title="户籍性质" @set-param="hj" actions="aac009"></check-radius>
+			<view v-show="submitData.aac056=='1'">
+				<van-field top :value="submitData.aac057" label="现就读学校" placeholder="请输入内容" required @change="e=>submitData.aac057=e.detail"/>
+			</view>
             
-			<van-field top v-if="submitData.aac009=='90'" :value="submitData.aac058" label=" " placeholder="户籍性质" required @change="e=>submitData.aac058=e.detail"/>
+            <check-radius title="文化程度" @set-param="e=>submitData.aac011=e" actions="aac011"></check-radius>
+            <view v-show="submitData.aac011=='90'">
+				<van-field top :value="submitData.aac013" label=" " placeholder="文化水平" required @change="e=>submitData.aac013=e.detail"/>
+			</view>
+			
+            <check-radius title="健康状况" @set-param="e=>submitData.aac033=e" actions="aac033"></check-radius>
+            <view v-show="submitData.aac033=='9'">
+				<van-field top :value="submitData.aac034" label=" " placeholder="健康状况" required @change="e=>submitData.aac034=e.detail"/>
+			</view>
+			
+            <check-radius title="户籍性质" @set-param="hj" actions="aac009"></check-radius>
+            <view v-show="submitData.aac009=='90'">
+				<van-field top :value="submitData.aac058" label=" " placeholder="户籍性质" required @change="e=>submitData.aac058=e.detail"/>
+			</view>
+			
 		
 			<check-checkbox title="是否享受政府扶持政策（可多选）" @set-param="e=>submitData.aac024=e" actions="aac024"></check-checkbox>
         </van-cell-group>
