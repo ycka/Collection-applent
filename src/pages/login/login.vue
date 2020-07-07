@@ -65,6 +65,7 @@
 					:value="param.verifyCode"
 					clearable
 					use-button-slot
+					readonly
 				>
 					<view slot="label" style="width:140upx;">记住密码</view>
 					<view slot="left-icon" style="margin-right:20rpx;">

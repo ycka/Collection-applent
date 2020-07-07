@@ -99,19 +99,20 @@
 			{
 				"pagePath": "pages/main/main",
 				"text": "数据采集",
-				"iconPath": "static/img/nav/a1.png",
-				"selectedIconPath": "static/img/nav/b1.png"
-			}, {
-				"pagePath": "pages/selectdata/selectdata",
-				"text": "数据查询",
 				"iconPath": "static/img/nav/a2.png",
 				"selectedIconPath": "static/img/nav/b2.png"
+			}, 
+			{
+				"pagePath": "pages/selectdata/selectdata",
+				"text": "数据查询",
+				"iconPath": "static/img/nav/a3.png",
+				"selectedIconPath": "static/img/nav/b3.png"
 			},
 			{
 				"pagePath": "pages/mockdata/mockdata",
 				"text": "采集统计",
-				"iconPath": "static/img/nav/a3.png",
-				"selectedIconPath": "static/img/nav/b3.png"
+				"iconPath": "static/img/nav/a1.png",
+				"selectedIconPath": "static/img/nav/b1.png"
 			}, {
 				"pagePath": "pages/systemdata/systemdata",
 				"text": "系统管理",
