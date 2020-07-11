@@ -23,6 +23,7 @@
 					clearable
 					@change="e=>param.userId=e.detail"
 					bind:click-icon="onClickIcon"
+					@blur="islive"
 				>
 				<view slot="label" style="width:140upx;">用户账户</view>
 				<view slot="left-icon" style="margin-right:20rpx;">
@@ -34,6 +35,7 @@
 					:value="param.password"
 					:type="passwordType"
 					@change="e=>param.password=e.detail"
+					
 					:border="false"
 				>
 				<view slot="label" style="width:140upx;">密码</view>
@@ -62,7 +64,6 @@
 				</van-fields>
 				<van-fields
 					custom-class="single"
-					:value="param.verifyCode"
 					clearable
 					use-button-slot
 					readonly
@@ -83,7 +84,6 @@
 				</van-fields>
 				<van-fields
 					custom-class="single"
-					clearable
 					label=" "
 					readonly
 				>
@@ -168,6 +168,16 @@
 		computed: mapState(['forcedLogin','imgurl','select_code']),
 		methods: {
 			...mapMutations(['login']),
+			islive(){
+				this.$store.dispatch('islive',{aaz024:this.param.userId}).then(e=>{
+					if(!e){
+						uni.showToast({
+							icon: 'none',
+							title: `账户${this.param.userId}不存在`
+						});
+					}
+				})
+			},
 			shuaxin(){
 				this.$store.dispatch('verifyCode')
 			},

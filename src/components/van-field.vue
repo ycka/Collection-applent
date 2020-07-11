@@ -7,7 +7,7 @@
             </view>
             <view class="weui-cells weui-cells_after-title" v-if="ob">
                 <view class="weui-cell weui-cell_input">
-                    <input class="weui-input f36" :placeholder="placeholder" :type="type" placeholder-class="placeholder" @input="changemap"/>
+                    <input @blur="blur($event)" class="weui-input f36" :placeholder="placeholder" :type="type" placeholder-class="placeholder" @input="changemap"/>
                 </view>
             </view>
         </view>
@@ -58,6 +58,9 @@
                 let obj = {}
                 obj.detail = e.detail.value
                 this.$emit('change',obj)
+            },
+            blur(e){
+                this.$emit('blur',e)
             }
         }
     }

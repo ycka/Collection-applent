@@ -116,10 +116,14 @@
 
 <script>
     import uCharts from '@/components/uchart.js';
+    import { mapState } from 'vuex'
     var canvaColumn = null;
     var _self;
 	var canvaRing = null;
     export default {
+        computed: {
+            ...mapState(['single_user','userInfo','select_code','dbdata']),
+        },
         data(){
             return{
                 markers: [],
@@ -160,6 +164,12 @@
             }
         },
         onLoad() {
+            let param = {
+                aaz024:this.userInfo.aaz024,
+                aaa020:this.userInfo.aaa020,
+                aaz026:this.userInfo.aaz026
+            }
+            this.$store.dispatch('db',param)
 			// _self = this;
 			// this.cWidth=uni.upx2px(750);
 			// this.cHeight=uni.upx2px(500);

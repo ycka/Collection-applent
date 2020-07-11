@@ -13,9 +13,8 @@
         </van-search>
 
         <view class="data-box">
-
             <van-swipe-cell
-            v-for="obj in tabledata"
+            v-for="obj in userList"
             :key="obj.id"
             class="swipe-cell"
             :right-width="65"
@@ -24,12 +23,13 @@
             >
                 <van-cell-group>
                     <view class="item">
-                        <view class="name" @tap="select_qu">{{obj.header}}</view>
-                        <view class="name">{{obj.name}}</view>
-                        <view>{{obj.mssn}}</view>
-						<view class="name">{{obj.item}}</view>
-						<view class="name">{{obj.on}}</view>
-                        <van-icon name="arrow" @tap="look(obj)"/>
+                        <view class="name" @tap="select_qu">{{obj.aac010}}</view>
+                        <view class="name">{{obj.aac003}}</view>
+                        <view>{{obj.aae005}}</view>
+						<view class="name">{{select_code['AAZ026'].find(e=>e.value==obj.aaz026).text}}</view>
+						<view class="name">{{select_code['AAE100'].find(e=>e.value==obj.aae100).text}}</view>
+                        <van-icon name="arrow" @click="look(obj,1)"/>
+                        
                         <!-- <van-icon name="records" @tap="edit(obj)"/> -->
                     </view>
                 </van-cell-group>
@@ -57,8 +57,22 @@
                 value:'',
             }
         },
-        computed: mapState(['select_tree']),
+        computed: mapState(['userList','userInfo','select_code']),
+        onLoad(){
+            this.getData()
+        },
         methods:{
+            getData(){
+                let param = {
+                    currentPage:'1',
+                    pageSize:'10',
+                    areaId:this.userInfo['aaa020']
+                }
+                this.$store.dispatch('get_userlist',param).then(e=>{
+                    console.log(e)
+                    console.log(this.userList)
+                })
+            },
             onChange(e) {
                 this.value = e.detail
             },
@@ -93,8 +107,9 @@
                     break;
                 }
             },
-            look(e){
-				console.log(e)
+            look(obj,num){
+                console.log(obj,num)
+                this.$store.commit('set_single_user',obj)
 				wx.navigateTo({
                     url: `../userInfo/userInfo`
                 });

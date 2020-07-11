@@ -1,13 +1,13 @@
 <template>
     <view>
         <van-cell-group>
-            <van-field type="number" top :value="submitData.aac002" label="身份证号" placeholder="请输入18位身份证号" @change="e=>submitData.aac002=e.detail"/>
+            <van-field type="number" top :value="submitData.aac002" @blur="exMssn" label="身份证号" placeholder="请输入18位身份证号" @change="e=>submitData.aac002=e.detail"/>
             <van-field :value="submitData.aac003" label="姓名" placeholder="请输入姓名" error-message=" " @change="e=>submitData.aac003=e.detail"/>
             <check-radius title="性别" required @set-param="e=>submitData.aac004=e" actions="aac004"></check-radius>
             <check-picker title="出生日期" @set-param="setold"></check-picker>
 			<check-picker title="年龄（根据出生日期计算）" :value="submitData.aac007" :look="true"></check-picker>
 			<check-radius-some title="民族" required @set-param="e=>submitData.aac005=e" actions="aac005"></check-radius-some>
-            <van-field :value="submitData.aae005" label="联系电话" placeholder="请输入手机号" error-message=" " @change="e=>submitData.aae005=e.detail"/>
+            <van-field :value="submitData.aae005" label="联系电话" @blur="exPhoto" placeholder="请输入手机号" error-message=" " @change="e=>submitData.aae005=e.detail"/>
             
 			<check-address title="户籍地址" @set-param="setaddress"></check-address>
             <van-field :value="submitData.aaa021" top placeholder="请填写详细地址" @change="e=>submitData.aaa021=e.detail"/>
@@ -107,6 +107,28 @@
 		
 		computed: mapState(['select_tree']),
 		methods:{
+			// aae005
+			exPhoto(){
+				this.$store.dispatch('phtoto',{aae005:this.submitData.aae005}).then(e=>{
+					if(!e){
+						uni.showToast({
+							icon: 'none',
+							title: '此号码已有绑定账户'
+						});
+					}
+				})
+			},
+			// aac002
+			exMssn(){
+				this.$store.dispatch('mssn',{aac002:this.submitData.aac002}).then(e=>{
+					if(!e){
+						uni.showToast({
+							icon: 'none',
+							title: '此号码已注册'
+						});
+					}
+				})
+			},
 			tonext(){
 				this.$store.commit('setaac002',this.submitData.aac002)
 				this.$store.dispatch('submitall',{key:'1',data:this.submitData}).then(e=>{

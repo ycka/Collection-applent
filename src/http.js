@@ -10,6 +10,12 @@ function get(url, data,header={'Cookie':store.state.sessionid}) {
 
 function post(url, data) {
   console.log(url)
+  // let param = {
+  //   aae011:store.userInfo.aae011,
+  //   aae022:store.userInfo.aae022,
+  //   aae036:,
+  //   aae035:store.userInfo.aae005
+  // }
   return request( host + url, 'POST', data,{
     // 'content-type': 'application/x-www-form-urlencoded',
     'content-type': 'application/json' ,
@@ -46,7 +52,7 @@ const http ={
 
 // function request(url, method, data, header = {"Cookie":"SESSION="+store.state.sessionid}) {
 function request(url, method, data,header={}) {
-  console.log(header)
+  // console.log(header)
   wx.showLoading({
     title: '加载中',
     mask: true
@@ -58,7 +64,7 @@ function request(url, method, data,header={}) {
       header,
       url:url,
       success: function (res) {
-        console.log(res)
+        // console.log(res)
         if(res.statusCode==401){
           console.log(401)
         }

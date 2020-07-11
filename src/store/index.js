@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import http from '../http'
+import service from '@/service'
 
 Vue.use(Vuex)
 
@@ -34,12 +35,39 @@ const store = new Vuex.Store({
 			sub4:{}
 		},
 		aac002:'',
-		screenHeight:0
+		screenHeight:0,
+		userList:[],
+		single_user:{},
+		dbdata:[]
 	},
 	mutations: {
+		set_db(store,param){
+			store.dbdata = param
+		},
+		set_single_user(state,param){
+			console.log('single_user',param)
+			state.single_user = param
+		},
+		set_userlist(state,param){
+			state.userList = param
+		},
 		set_userInfo(state,param){
-			Object.assign(state.userInfo,param)
+			console.log(param)
+			Object.assign(state.userInfo,param.userInfo)
 			console.log(state.userInfo)
+			service.addUser(state.userInfo)
+			store.commit('set_isLogin',service.getUsers())
+		},
+		init_userInfo(state,param){
+			state.userInfo = param
+		},
+		set_isLogin(state,param){
+			if(param.length>0){
+				state.hasLogin = true
+			}else{
+				state.hasLogin = false
+			}
+			
 		},
 		set_sessionid(state,param){
 			state.sessionid = param.sessionid
@@ -69,17 +97,18 @@ const store = new Vuex.Store({
 			state.styleClass.style_is = color[data]
 		},
 		set_select_code(state,data){
-			// console.log(data)
+			console.log(data)
 			let res = {}
 			Object.keys(data).map(ob=>{
 				res[ob] = data[ob].map(e=>({name:e.aaa103,value:e.aaa102,title:e.aaa101,keys:e.aaa100,text:e.aaa103}))
 			})
+			console.log(res)
 			state.select_code = res
 		},
 		set_select_tree(state,data){
 			state.select_tree.l2 = data.filter(e=>e.floor=='2').map(o=>({...o,text:o.label,value:o.id}))
 			state.select_tree.l3 = data.filter(e=>e.floor=='3').map(o=>({...o,text:o.label,value:o.id}))
-			console.log(state.select_tree)
+			// console.log(state.select_tree)
 			// state.select_tree = data
 		},
 		set_select_tree_2(state,data){
@@ -90,6 +119,63 @@ const store = new Vuex.Store({
 		}
 	},
 	actions:{
+		async getSystemPublic(){
+			let param = {
+				"currentPage":"1",
+				"pageSize":"10"
+			}
+			let res = await http.post('/systemSettings/getSysNoticeList',param)
+			console.log(`------系统公告-----`,res)
+		},
+		async phtoto(store,param){
+			let res = await http.post('/account/mobileUnique',param)
+			console.log(res)
+			if(res.success == "OK") return res.data
+			return false
+		},
+		async mssn(store,param){
+			let res = await http.post('/account/idCardUnique',param)
+			console.log(res)
+			if(res.success == "OK") return res.data
+			return false
+		},
+		async db(store,param){
+			let res = await http.post('/statistics/getInfo',param)
+			console.log(res)
+			if(res.success == "OK"){
+				console.log(res)
+				store.commit('set_db',res.data)
+			}
+		},
+		async clear(param){
+			let res = await http.post('/systemSettings/deleteCollectById',param)
+			console.log(res)
+			if(res.success == "OK") return true
+			return false
+		},
+		async islive(store,param){
+			let res = await http.post('/account/usedLoginName',param)
+			console.log(res)
+			if(res.success == "OK") return res.data
+			return false
+		},
+		async startAndStop(store,param){
+			let res = await http.post('/account/onOrOff',param)
+			if(res.success == "OK") return res.data
+			return false
+		},
+		async reset(store,param){
+			let res = await http.post('/account/passwordReset',param)
+			if(res.success == "OK") return true
+			return false
+		},
+		async get_userlist(store,param){
+			console.log(param)
+			let res = await http.post('/account/getList',param)
+			console.log(res)
+			if(res.success == "OK") store.commit('set_userlist',res.data.dataList)
+			return res.data.dataList
+		},
 		// 除了地址外所有代码项
 		async getData(store,param){
 			let res = await http.post('/code/allCode')
@@ -125,8 +211,13 @@ const store = new Vuex.Store({
 				"accountNature":"2", // 户口性质
 				"orderCode":"desc"     // 排序代码项
 			}
+			console.log(param)
 			let list = await http.post('/account/search/list',param)
 			console.log(list)
+		},
+		async regPassword(state,param){
+			let list = await http.post('/account/passwordModify',param)
+			return list
 		},
 		// 查询页面下钻
 		async getDown(store,param){

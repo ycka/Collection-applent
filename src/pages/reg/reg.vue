@@ -63,6 +63,24 @@
 					});
 					return;
 				}
+				if (this.param.sopossword != this.param.newpossword) {
+					uni.showToast({
+						icon: 'none',
+						title: '两次输入不统一，请重新输入'
+					});
+					return;
+				}
+				let param = {
+					aaz024:this.param.user,
+					aaz025:this.param.oldpossword,
+					newPassword:this.param.newpossword
+				}
+				this.$store.dispatch('regPassword',param).then(e=>{
+					uni.showToast({
+						icon: 'none',
+						title: '密码修改成功'
+					});
+				})
 				// service.addUser(data);
 				uni.showToast({
 					title: '修改成功'

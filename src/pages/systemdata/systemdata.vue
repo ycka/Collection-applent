@@ -19,10 +19,10 @@
               link-type="navigateTo"
               url="../reg/reg"
           />
-            <van-cell title="系统设置" is-link />
-            <van-cell title="系统公告" is-link />
+            <van-cell title="系统设置" is-link url="../systemset/systemset"/>
+            <van-cell title="系统公告" is-link url="../announcement/announcement" />
             <van-cell title="提示信息" is-link />
-            <van-cell title="清理测试数据" is-link />
+            <van-cell title="清理测试数据" @click="clear"/>
         </view>
       </div>
     </div>
@@ -77,6 +77,16 @@
     components: {
     },
     methods: {
+      clear(){
+        this.$store.dispatch('clear',{"aac001":"1"}).then(e=>{
+          if(e){
+            uni.showToast({
+                icon: 'none',
+                title: `清理成功`
+            });
+          }
+        })
+      },
       updatainfo(){
         wx.navigateTo({
           url: '/pages/memberinfo/main'

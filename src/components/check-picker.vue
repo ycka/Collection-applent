@@ -46,6 +46,16 @@
                 default:''
             }
         },
+        created(){
+            this.makeleavetext = this.value
+            console.log(this.value)
+        },
+        watch:{
+            value(e){
+                this.makeleavetext = e
+                console.log(e)
+            }
+        },
         data(){
             return{
                 maxDate: new Date().getTime(),

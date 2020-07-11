@@ -23,6 +23,7 @@
 	import tackOne from '@/components/tack-one'
 	import styleOught from '@/components/style-ought'
 	import { mapState } from 'vuex'
+	import service from '@/service'
 
 	export default {
 		components:{
@@ -38,12 +39,10 @@
 		methods:{
 			
 		},
-		computed: mapState(['forcedLogin', 'hasLogin', 'userName','person_id','styleClass']),
+		computed: mapState(['select_code', 'hasLogin', 'userName','userInfo','styleClass']),
 		onShow(){
-			console.log('--传参数了--',this.person_id)
-			this.$store.dispatch('getData').then(e=>{
-				
-			})
+			console.log('--传参数了--',this.userInfo)
+			if(Object.keys(this.select_code).length==0) this.$store.dispatch('getData')
 		},
 		onLoad() {
 			let self = this
@@ -52,7 +51,9 @@
 					let statusBarHeight = res.statusBarHeight+45
 					self.$store.commit('setHeight',statusBarHeight)
                 },
-            })
+			})
+			this.$store.commit('set_isLogin',service.getUsers())
+			if(service.getUsers().length>0) this.$store.commit('init_userInfo',service.getUsers()[0])
 			if (!this.hasLogin) {
 				uni.navigateTo({
 					url: '../login/login'
@@ -82,6 +83,7 @@
 				// 	}
 				// });
 			}
+			
 		}
 	}
 </script>

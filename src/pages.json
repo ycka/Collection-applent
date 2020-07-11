@@ -83,10 +83,25 @@
 				"navigationBarTitleText": "找回密码",
 				"navigationStyle": "custom"
 			}
-		}, {
+		}, 
+		{
 			"path": "pages/user/user",
 			"style": {
 				"navigationBarTitleText": "我的",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/systemset/systemset",
+			"style": {
+				"navigationBarTitleText": "系统设置",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/announcement/announcement",
+			"style": {
+				"navigationBarTitleText": "系统公告",
 				"navigationStyle": "custom"
 			}
 		}
@@ -153,7 +168,8 @@
 			"van-tree-select": "/wxcomponents/vant/dist/tree-select/index",
 			"van-tree-select-two": "/wxcomponents/vant/dist/tree-select-two/index",
 			"van-tab": "/wxcomponents/vant/dist/tab/index",
-  			"van-tabs": "/wxcomponents/vant/dist/tabs/index"
+			"van-tabs": "/wxcomponents/vant/dist/tabs/index",
+			"van-switch": "/wxcomponents/vant/dist/switch/index"
 		}
 	}
 	
