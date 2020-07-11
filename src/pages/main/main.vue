@@ -12,7 +12,7 @@
 					<view slot="left-icon">公告：</view>
 				</van-notice-bar>
 				<style-ought></style-ought>
-				<tack-one @set-param="e=>huji=e"></tack-one>
+				<tack-one @set-param="e=>huji=e" v-if="show"></tack-one>
 				
 			</view>
 		</view>
@@ -33,16 +33,21 @@
 		data(){
 			return{
 				num:0,
-				huji:''
+				huji:'',
+				show:false
 			}
 		},
 		methods:{
 			
 		},
-		computed: mapState(['select_code', 'hasLogin', 'userName','userInfo','styleClass']),
+		computed: mapState(['select_code', 'hasLogin','userInfo','styleClass']),
 		onShow(){
 			console.log('--传参数了--',this.userInfo)
 			if(Object.keys(this.select_code).length==0) this.$store.dispatch('getData')
+			this.show = true
+		},
+		onHide(){
+			this.show = false
 		},
 		onLoad() {
 			let self = this

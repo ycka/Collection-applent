@@ -104,6 +104,13 @@
 				"navigationBarTitleText": "系统公告",
 				"navigationStyle": "custom"
 			}
+		},
+		{
+			"path": "pages/look/look",
+			"style": {
+				"navigationBarTitleText": "查看",
+				"navigationStyle": "custom"
+			}
 		}
 	],
 	"tabBar": {

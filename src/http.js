@@ -1,5 +1,5 @@
 import store from './store'
-
+import service from '@/service'
 const host = "http://223.100.130.116:7171/ahiru"
 // const mshost = ""
 
@@ -16,10 +16,11 @@ function post(url, data) {
   //   aae036:,
   //   aae035:store.userInfo.aae005
   // }
+  console.log(service.getSessionId())
   return request( host + url, 'POST', data,{
     // 'content-type': 'application/x-www-form-urlencoded',
     'content-type': 'application/json' ,
-    'Cookie':store.state.sessionid
+    'Cookie':service.getSessionId()
   })
 }
 

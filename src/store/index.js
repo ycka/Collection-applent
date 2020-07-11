@@ -38,9 +38,14 @@ const store = new Vuex.Store({
 		screenHeight:0,
 		userList:[],
 		single_user:{},
-		dbdata:[]
+		dbdata:[],
+		setSelect:[],
+		editData:null
 	},
 	mutations: {
+		edit_data(store,param){
+			store.editData = param
+		},
 		set_db(store,param){
 			store.dbdata = param
 		},
@@ -100,7 +105,7 @@ const store = new Vuex.Store({
 			console.log(data)
 			let res = {}
 			Object.keys(data).map(ob=>{
-				res[ob] = data[ob].map(e=>({name:e.aaa103,value:e.aaa102,title:e.aaa101,keys:e.aaa100,text:e.aaa103}))
+				res[ob] = data[ob].map(e=>({name:e.aaa103,value:e.aaa102,title:e.aaa101,keys:e.aaa100,text:e.aaa103,}))
 			})
 			console.log(res)
 			state.select_code = res
@@ -116,9 +121,20 @@ const store = new Vuex.Store({
 			state.select_tree.l5 = data.filter(e=>e.floor=='5').map(o=>({...o,text:o.label,value:o.id}))
 			state.select_tree.l6 = data.filter(e=>e.floor=='6').map(o=>({...o,text:o.label,value:o.id}))
 			// state.select_tree = data
+		},
+		setSelect(state,data){
+			state.setSelect = data
 		}
 	},
 	actions:{
+		async getSelect(state,params){
+			let param = {
+				accountId:params
+			}
+			let res = await http.post('/account/search/condition',param)
+			console.log(`------查询页面四级数据-----`,res)
+			// store.commit('setSelect',res)
+		},
 		async getSystemPublic(){
 			let param = {
 				"currentPage":"1",
@@ -214,6 +230,7 @@ const store = new Vuex.Store({
 			console.log(param)
 			let list = await http.post('/account/search/list',param)
 			console.log(list)
+			return list
 		},
 		async regPassword(state,param){
 			let list = await http.post('/account/passwordModify',param)
@@ -273,6 +290,7 @@ const store = new Vuex.Store({
 					success(res){
 						let img = 'data:image/png;base64,'+wx.arrayBufferToBase64(res.data);
 						let sessionid = res.header['Set-Cookie'];
+						service.setSessionId(sessionid)
 						store.commit('set_sessionid',{url:img,sessionid:sessionid})
 						resolve(img)
 					}

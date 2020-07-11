@@ -2,19 +2,24 @@
     <view>
         <van-cell-group>
             <view>
-                <check-checkbox other="00" title="参保情况（可多选，[未参保]不可与其他项同时选择）" @set-param="e=>submitData.aas001=e" actions="aas001"></check-checkbox>
+                <check-checkbox other="00" title="参保情况（可多选，[未参保]不可与其他项同时选择）" @set-param="e=>submitData.aas001=e" actions="aas001"
+                    :default="submitData.aas001"></check-checkbox>
                 
             </view>
 
-            <check-radius title="技术等级" @set-param="e=>submitData.aas002=e" actions="aas002"></check-radius>
-            <check-radius title="参加培训情况" @set-param="e=>submitData.aas003=e" actions="aas003"></check-radius>
-            <check-radius title="想参加职业技能培训吗？" @set-param="e=>submitData.aas005=e" actions="aas005"></check-radius>
+            <check-radius title="技术等级" @set-param="e=>submitData.aas002=e" actions="aas002"
+                :default="submitData.aas002"></check-radius>
+            <check-radius title="参加培训情况" @set-param="e=>submitData.aas003=e" actions="aas003"
+                :default="submitData.aas003"></check-radius>
+            <check-radius title="想参加职业技能培训吗？" @set-param="e=>submitData.aas005=e" actions="aas005"
+                :default="submitData.aas005"></check-radius>
             <view class="page-section" v-show="submitData.aas005=='1'"> 
                 <van-field :value="submitData.aas006" label="想参加的工种1" placeholder="请填写答案" required @change="e=>submitData.aas006=e.detail"/>
                 <van-field :value="submitData.aas009" label="想参加的工种2" placeholder="请填写答案" required @change="e=>submitData.aas009=e.detail"/>
                 <van-field :value="submitData.aas010" label="想参加的工种3" placeholder="请填写答案" required @change="e=>submitData.aas010=e.detail"/>
                     
-                <check-radius title="希望培训的时间" @set-param="e=>submitData.aas007=e" actions="aas007"></check-radius>
+                <check-radius title="希望培训的时间" @set-param="e=>submitData.aas007=e" actions="aas007"
+                    :default="submitData.aas007"></check-radius>
             </view>
         </van-cell-group>
         <!-- <view style="width:100%;background:#fff;padding:20upx;">
@@ -34,7 +39,7 @@
     import { mapState } from 'vuex' 
     export default {
         components:{checkRadius,vanField,checkCheckbox},
-        computed: mapState(['select_tree','aac002']),
+        computed: mapState(['select_tree','aac002','editData']),
         data(){
 			return{
 				// 提交数据
@@ -49,6 +54,17 @@
                     aas007:'',
                     aac002:'',
                 },
+                default:''
+			}
+        },
+        mounted(){
+			this.default = Object.assign({},this.submitData)
+			if(this.editData!=null){
+				Object.keys(this.submitData).map(obj=>{
+					if(this.editData[obj]){
+						this.submitData[obj] = this.editData[obj]
+					}
+				})
 			}
 		},
 		methods:{

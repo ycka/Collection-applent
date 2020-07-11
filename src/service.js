@@ -17,7 +17,20 @@ const addUser = function(userInfo) {
 	uni.setStorageSync(USERS_KEY, JSON.stringify(users));
 }
 
+const getSessionId = ()=>{
+	let ret = uni.getStorageSync('sessinoId');
+	if(!ret){
+		ret = ''
+	}
+	return ret
+}
+const setSessionId = (data)=>{
+	uni.setStorageSync('sessinoId',data);
+}
+
 export default {
 	getUsers,
-	addUser
+	addUser,
+	getSessionId,
+	setSessionId
 }

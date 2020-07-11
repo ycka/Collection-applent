@@ -12,7 +12,7 @@
 					<view slot="left-icon">公告：</view>
 				</van-notice-bar>
 				<style-ought></style-ought>
-				<tack-two></tack-two>
+				<tack-two v-if="show"></tack-two>
 				
 			</view>
 		</view>
@@ -29,17 +29,21 @@
 			tackTwo,
 			styleOught
 		},
+		computed: mapState(['styleClass']),
 		data(){
 			return{
-				num:0
+				num:0,
+				show:false
 			}
 		},
 		methods:{
            
         },
-		computed: mapState(['forcedLogin', 'hasLogin', 'userName','person_id','styleClass']),
 		onShow(){
-			console.log('--传参数了--',this.person_id)
+			this.show = true
+		},
+		onHide(){
+			this.show = false
 		},
 		onLoad() {
 			

@@ -96,11 +96,17 @@
 		},
 		watch:{
 			value1(e){
-                this.homename = e
+                if(this.n1==1){
+                    this.homename = e
+                    this.n1++
+                }
                 console.log(`----title1-----`,this.homename)
 			},
 			value2(e){
-				this.homename_three = e
+                if(this.n2==1){
+                    this.homename_three = e
+                    this.n2++
+                }
 			}
 		},
         data(){
@@ -122,7 +128,9 @@
                 data1:[],
                 data2:[],
                 subcity:'',
-                subdown:''
+                subdown:'',
+                n1:1,
+                n2:1
             }
         },
         mounted(){

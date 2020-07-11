@@ -7,7 +7,7 @@
             </view>
             <view class="weui-cells weui-cells_after-title" v-if="ob">
                 <view class="weui-cell weui-cell_input">
-                    <input @blur="blur($event)" class="weui-input f36" :placeholder="placeholder" :type="type" placeholder-class="placeholder" @input="changemap"/>
+                    <input :value="value" @blur="blur($event)" class="weui-input f36" :placeholder="placeholder" :type="type" placeholder-class="placeholder" @input="changemap"/>
                 </view>
             </view>
         </view>

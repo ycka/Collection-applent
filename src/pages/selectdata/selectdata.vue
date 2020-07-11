@@ -2,7 +2,7 @@
     <view class="content">
         <custom-header title="数据查询"></custom-header>
         <van-search
-            :value="value"
+            :value="submitData.accountName"
             label="姓名"
             placeholder="请输入搜索关键词"
             use-action-slot
@@ -68,7 +68,7 @@
         <view class="data-box">
 
             <van-swipe-cell
-            v-for="obj in tabledata"
+            v-for="(obj,idx) in tabledata"
             :key="obj.id"
             class="swipe-cell"
             :right-width="65"
@@ -77,11 +77,11 @@
             >
                 <van-cell-group>
                     <view class="item">
-                        <view class="touxiang">{{obj.header}}</view>
-                        <view class="name">{{obj.name}}</view>
-                        <view>{{obj.mssn}}</view>
-                        <van-icon name="eye-o" @tap="look(obj)"/>
-                        <van-icon name="records" @tap="edit(obj)"/>
+                        <view class="name">{{idx+1}}</view>
+                        <view class="name">{{obj.aac003}}</view>
+                        <view>{{obj.aac002}}</view>
+                        <van-icon name="eye-o" @click="look(obj)"/>
+                        <van-icon name="records" @click="edit(obj)"/>
                     </view>
                 </van-cell-group>
                 <view slot="right" class="rights">删除</view>
@@ -96,12 +96,7 @@
     export default {
         data(){
             return{
-                tabledata:[
-                    {id:'0',name:'王二小',mssn:'210181198711249872',header:'头像'},
-                    {id:'1',name:'王二小',mssn:'210181198711249872',header:'头像'},
-                    {id:'2',name:'王二小',mssn:'210181198711249872',header:'头像'},
-                    {id:'3',name:'王二小',mssn:'210181198711249872',header:'头像'},
-                ],
+                tabledata:[],
                 selectData:[
                     {id:1,name:'黄渤',mssn:'210187199287672292'},
                 ],
@@ -132,14 +127,23 @@
                     ageFlg:1,
                     accountNature:1,
                     orderCode:'desc',
-                    timeCode:'1'
+                    timeCode:'1',
+                    accountName:''
                 }
             }
         },
+        onShow(){
+            this.$store.commit('edit_data',null)
+        },
         onLoad(){
             this.init()
+            let as = this.userInfo['acc001']
+            console.log(as)
+            if(this.setSelect.length==0){
+                this.$store.dispatch('getSelect',as)
+            }
         },
-        computed: mapState(['select_code','userInfo']),
+        computed: mapState(['select_code','userInfo','setSelect']),
         methods:{
             init(){
                 this.value2 = this.select_code['TIME'][0].value
@@ -150,7 +154,7 @@
                 this.submitData.sex = this.select_code['AAC004'][0].value
                 this.submitData.ageFlg = this.select_code['IdCard15'][0].value
                 this.submitData.areaId = this.userInfo['aaa020']
-                this.$store.dispatch('getList',this.submitData)
+                this.selectDa()
             },
             sexfunc(obj){
                 this.submitData.sex = obj.value
@@ -162,13 +166,22 @@
                 this.submitData.ageFlg=e.value
             },
             onChange(e) {
-                this.value = e.detail
+                this.submitData.accountName = e.detail
             },
             onSearch() {
                 console.log('搜索' + this.value);
             },
+            selectDa(){
+                this.$store.dispatch('getList',this.submitData).then(e=>{
+                    if(e.data&&e.data.dataList.length>0){
+                        this.tabledata = e.data.dataList
+                    }else{
+                        this.tabledata = []
+                    }
+                })
+            },
             onClick() {
-                console.log('搜索' + this.value);
+                this.selectDa()
             },
             setvalue1(e){
                 console.log(e.detail);
@@ -210,6 +223,9 @@
             },
             look(e){
                 console.log(e)
+                wx.navigateTo({
+                    url: `../look/look?data=${JSON.stringify(e)}`
+                });
             },
             edit(e){
                 console.log(e)
@@ -241,11 +257,12 @@
                 this.selectComponent('#item3').toggle(false);
             },
             reset_on(){
-                this.submitData={
-                    sex:1,
-                    ageFlg:1,
-                    accountNature:1
-                }
+                Object.assign(this.submitData,{
+                    sex:this.select_code['AAC004'][0].value,
+                    ageFlg:this.select_code['IdCard15'][0].value,
+                    accountNature:this.select_code['AAC009'][0].value
+                })
+
             }
         }
     }
