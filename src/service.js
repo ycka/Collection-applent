@@ -17,6 +17,12 @@ const addUser = function(userInfo) {
 	uni.setStorageSync(USERS_KEY, JSON.stringify(users));
 }
 
+const removeUser = function(userInfo) {
+	let users = getUsers();
+	users = []
+	uni.setStorageSync(USERS_KEY, JSON.stringify(users));
+}
+
 const getSessionId = ()=>{
 	let ret = uni.getStorageSync('sessinoId');
 	if(!ret){
@@ -28,9 +34,26 @@ const setSessionId = (data)=>{
 	uni.setStorageSync('sessinoId',data);
 }
 
+const userforget = (data)=>{
+	uni.setStorageSync('FORGET',JSON.stringify(data));
+}
+
+const getuser = ()=>{
+	let ret = '';
+	ret = uni.getStorageSync('FORGET');
+	if (!ret) {
+		ret = '[]';
+	}
+	return JSON.parse(ret);
+}
+
 export default {
 	getUsers,
 	addUser,
 	getSessionId,
-	setSessionId
+	setSessionId,
+	removeUser,
+	userforget,
+	getuser
+
 }

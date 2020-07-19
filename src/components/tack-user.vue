@@ -1,20 +1,24 @@
 <template>
     <view>
         <van-cell-group>
-            <van-field :value="submitData.abc003" label="账户" placeholder="请输入账户" error-message=" " @change="e=>submitData.abc003=e.detail"/>
-            <van-field :value="submitData.abc002" label="姓名" placeholder="请输入姓名" @change="e=>submitData.abc002=e.detail"/>
+            <van-field :value="submitData.aaz024" label="账户" placeholder="请输入账户" error-message=" " @change="e=>submitData.aaz024=e.detail"/>
+			<van-field :value="submitData.aaz025" type="password" label="密码" placeholder="请输入密码" error-message=" " @change="e=>submitData.aaz025=e.detail"/>
+            <!-- <van-field :value="submitData.abc002" label="姓名" placeholder="请输入姓名" @change="e=>submitData.abc002=e.detail"/> -->
             <van-field type="number" top :value="submitData.aac002" label="身份证号" placeholder="请输入18位身份证号" @change="e=>submitData.aac002=e.detail"/>
             <van-field :value="submitData.aac003" label="姓名" placeholder="请输入姓名" error-message=" " @change="e=>submitData.aac003=e.detail"/>
             <van-field :value="submitData.aae005" label="联系电话" placeholder="请输入手机号" error-message=" " @change="e=>submitData.aae005=e.detail"/>
-            <check-picker title="账户类型" :value="submitData.aac007" :look="true"></check-picker>
+            <!-- <check-picker title="账户类型" :value="submitData.aaz026" :look="true" actions="aaz026"></check-picker> -->
+			<check-radius title="账户类型" :default="submitData.aaz026" @set-param="e=>submitData.aaz026=e" actions="aaz026"></check-radius>
             <check-address :data1="select_tree" :data2="select_tree" title="负责区域" @set-param="setaddress"></check-address>
-            <check-radius title="账号状态" :default="submitData.aac033" @set-param="e=>submitData.aac033=e" actions="aac033"></check-radius>
+			<check-radius title="是否是测试账户" :default="submitData.aaz001" @set-param="e=>submitData.aaz001=e" actions="aaz001"></check-radius>
+            <check-radius title="账号状态" :default="submitData.aae100" @set-param="e=>submitData.aae100=e" actions="aae100"></check-radius>
+			<van-field :value="submitData.aae013" label="备注" placeholder="请输入" error-message=" " @change="e=>submitData.aae013=e.detail"/>
             <check-radius title="账号属性" :default="submitData.aac004" required @set-param="e=>submitData.aac004=e" actions="aac004"></check-radius>
 
         </van-cell-group>
-        <!-- <view style="width:100%;background:#fff;padding:20upx;">
-            <button type="primary" plain="true" style="width:70%;margin:0 auto;" @tap="cons">按钮</button>
-        </view> -->
+		<view class="center-clomn mt">
+			<van-button plain type="info" @tap="cons">提交</van-button>
+		</view>
     </view>
 </template>
 
@@ -31,15 +35,22 @@
 			return{
 				// 提交数据
 				submitData:{
+					updateType:'01',
                     aac002:'',
                     aac003:'',
                     aac004:'',
-                    aac007:'',
+                    aaz026:'',
                     aae005:'',
-                    aac026:'',
-                    abc003:'',
-                    abc002:'',
-                    aac033:'',
+                    aac010:'',
+					aaz024:'',
+					aaz025:'',
+					aae100:'',
+					aaa020:'',
+					aaz001:'',
+					aae013:'',
+					aae011:'',
+					aae022:'',
+					aae036:'',
 				},
 				// 性别
 				sexshow:false,
@@ -71,26 +82,40 @@
 				address_val_two:'',
 				//临时地址
 				address:'',
-				address_two:''
+				address_two:'',
+				default:{}
 
 			}
+		},
+		computed: {
+            ...mapState(['single_user','userInfo','select_code','select_tree']),
         },
         mounted(){
-            setTimeout(e=>{
-                this.submitData.aac004 = '1'
-                this.submitData.aac033 = '1'
-            },500)
+
+            // setTimeout(e=>{
+            //     this.submitData.aac004 = '1'
+            //     this.submitData.aae100 = '1'
+			// },500)
+			Object.assign(this.default,this.submitData);
+
         },
-		computed: mapState(['select_tree']),
 		methods:{
 			cons(){
-                console.log(this.submitData)
+				this.submitData.aae036 = this.getNowFormatDate()
+				this.submitData.aae011 = this.userInfo.aae011
+				this.submitData.aae022 = this.userInfo.aac010
+				console.log(this.submitData)
+				this.$store.dispatch('setUserAdt',this.submitData).then(e=>{
+					if(e.success == "OK"){
+						Object.assign(this.submitData,this.default);
+						uni.navigateBack({
+							 delta: 1
+						});
+					}else{
+						console.log('保存失败')
+					}
+				})
             },
-			// abc(e){
-			// 	let da = e.detail.value
-            //     console.log(da)
-			// 	this.submitData.as = da.join(',')
-			// },
 			checkchange(e){
 				this.result = e.detail
 				console.log(this.result)
@@ -99,8 +124,8 @@
 			// 年龄确定
 			setold(da){
                 this.submitData.aac006=da
-				this.submitData.aac007 = this.getAge(da)
-				console.log(this.submitData.aac007)
+				this.submitData.aaz026 = this.getAge(da)
+				console.log(this.submitData.aaz026)
 			},
 			// 计算岁数
 			getAge(birthday){
@@ -116,22 +141,31 @@
 				this.$emit('setParam',this.submitData.aac009)
 			},
 			setaddress(e){
+				this.submitData.aaa020=e.value
 				if(e.index==1){
-					this.submitData.aac026=e.value
+					this.submitData.aac010 = e.all
 					this.address = e.name
 				}else{
-					this.submitData.aac026+=','+e.value
-					console.log(this.submitData.aac026)
+					this.submitData.aac010 = e.all
 					this.address_two = e.name
 				}
-				
-				// this.submitData.aac010=e.value
-				// this.address_val = e.name
 			},
-			fzfunc(){
-				this.submitData.aac010=this.submitData.aac026
-				this.address_val = this.address
-				this.address_val_two = this.address_two
+			getNowFormatDate() {
+				var date = new Date();
+				var seperator1 = "-";
+				var seperator2 = ":";
+				var month = date.getMonth() + 1;
+				var strDate = date.getDate();
+				if (month >= 1 && month <= 9) {
+					month = "0" + month;
+				}
+				if (strDate >= 0 && strDate <= 9) {
+					strDate = "0" + strDate;
+				}
+				var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+						+ " " + date.getHours() + seperator2 + date.getMinutes()
+						+ seperator2 + date.getSeconds();
+				return currentdate;
 			}
 		},
     }

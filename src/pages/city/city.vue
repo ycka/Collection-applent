@@ -29,11 +29,11 @@
 			tackThree,
 			styleOught
 		},
-		computed: mapState(['styleClass']),
+		computed: mapState(['styleClass','at']),
 		data(){
 			return{
 				num:0,
-				show:false
+				show:true
 			}
 		},
 		methods:{
@@ -42,8 +42,8 @@
 		onShow(){
 			this.show = true
 		},
-		onHide(){
-			this.show = false
+		destroy(){
+			if(this.at!=1) this.show = false
 		},
 		onLoad() {
 			

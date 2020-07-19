@@ -3,7 +3,7 @@
 		<view class="weui-cells__title f36">
             <view class="required">* &nbsp;</view>
             <view> {{title}}</view>
-			<view v-show="btn" @click="$emit('fuzhi')" style="text-decoration:underline;font-size:30upx;">点击可按[户籍地址]填入</view>
+			<view v-show="btn" @click="$emit('fuzhi')" style="text-decoration:underline;font-size:30upx;">（点击可按[户籍地址]填入）</view>
         </view>
 
         <van-cell :title="homename" @click="homeshow=true">
@@ -216,6 +216,10 @@
             sub_city(){
                 this.next++
                 // console.log(this.dizhi.join('-'),this.text_city.join(','),1)
+                if(this.text_city.length==1){
+                    this.homeshow = false
+                    return
+                }
                 this.homename = this.text_city.join('-')
                 this.subcity = this.dizhi.join(',')
                 let para = this.dizhi[this.dizhi.length-1]

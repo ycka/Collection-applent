@@ -5,9 +5,9 @@
 			<view v-show="hasLogin" class="hello">
                 <style-ought></style-ought>
 				<tack-user @set-param="e=>huji=e"></tack-user>
-				<view class="center-clomn mt">
+				<!-- <view class="center-clomn mt">
 					<van-button plain type="info" @tap="tonext">提交</van-button>
-				</view>
+				</view> -->
 			</view>
 		</view>
 	</view>

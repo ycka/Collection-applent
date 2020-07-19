@@ -16,50 +16,50 @@
 
             let sely = this
             //获取定位
-            wx.getLocation({
-                type: 'wgs84',
-                success(res) {
-                    let {longitude,latitude} = res;
-                    console.log({longitude,latitude})
-                    sely.param.longitude = res.longitude
-					sely.param.latitude = res.latitude
-					sely.$store.dispatch('location',sely.param)
-                },
-                fail(){
-                wx.showModal({
-                    title: '温馨提示',
-                    content: '获取定位失败，请前往设置打开定位权限',
-                    confirmText: '设置',
-                    success(res) {
-                        if (res.confirm) {
-                            wx.openSetting({
-                                success: function (res) {
-                                    if (res.authSetting["scope.userLocation"]) {
-                                        wx.getLocation({
-                                            type: 'wgs84',
-                                            success(res) {
-                                                let {longitude,latitude} = res;
-                                                sely.param.longitude = res.longitude
-												sely.param.latitude = res.latitude
-												sely.$store.dispatch('location',sely.param)
-                                            }
-                                        })
-                                    }else{
-                                        wx.navigateBack({
-                                            delta: 1
-                                        })
-                                    }
-                                }
-                            })
-                        } else if (res.cancel) {
-                            wx.navigateBack({
-                                delta: 1
-                            })
-                        }
-                    }
-                })
-                }
-            })
+            // wx.getLocation({
+            //     type: 'wgs84',
+            //     success(res) {
+            //         let {longitude,latitude} = res;
+            //         console.log({longitude,latitude})
+            //         sely.param.longitude = res.longitude
+			// 		sely.param.latitude = res.latitude
+			// 		sely.$store.dispatch('location',sely.param)
+            //     },
+            //     fail(){
+            //     wx.showModal({
+            //         title: '温馨提示',
+            //         content: '获取定位失败，请前往设置打开定位权限',
+            //         confirmText: '设置',
+            //         success(res) {
+            //             if (res.confirm) {
+            //                 wx.openSetting({
+            //                     success: function (res) {
+            //                         if (res.authSetting["scope.userLocation"]) {
+            //                             wx.getLocation({
+            //                                 type: 'wgs84',
+            //                                 success(res) {
+            //                                     let {longitude,latitude} = res;
+            //                                     sely.param.longitude = res.longitude
+			// 									sely.param.latitude = res.latitude
+			// 									sely.$store.dispatch('location',sely.param)
+            //                                 }
+            //                             })
+            //                         }else{
+            //                             wx.navigateBack({
+            //                                 delta: 1
+            //                             })
+            //                         }
+            //                     }
+            //                 })
+            //             } else if (res.cancel) {
+            //                 wx.navigateBack({
+            //                     delta: 1
+            //                 })
+            //             }
+            //         }
+            //     })
+            //     }
+            // })
 		},
 		onHide: function() {
 			console.log('App Hide');
@@ -127,13 +127,12 @@
 		background-color: #fff;
 	}
 	.content_in{
-		width:720upx;
-		margin:15upx 6upx;
+		width:750upx;
+		padding:15upx 6upx;
 		background-color: none;
 		display: flex;
 		flex: 1;
 		flex-direction: column;
-		box-sizing:border-box;
 		overflow:hidden;
 		border-radius:12upx;
 		padding:0 0 20upx 0;
@@ -470,5 +469,11 @@
 	}
 	.none{
 		display:none;
+	}
+	.sdfe{
+		.van-checkbox__icon-wrap{
+			border:2upx solid #ebebeb!important;
+			border-radius:50%;
+		}
 	}
 </style>

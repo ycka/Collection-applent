@@ -21,11 +21,10 @@
 				<van-fields
 					:value="param.userId"
 					clearable
-					@change="e=>param.userId=e.detail"
-					bind:click-icon="onClickIcon"
+					@input="e=>param.userId=e.detail"
 					@blur="islive"
 				>
-				<view slot="label" style="width:140upx;">用户账户</view>
+				<view slot="label" style="width:140upx;">用户账号</view>
 				<view slot="left-icon" style="margin-right:20rpx;">
 					<van-icon color="#00e5cb" size="60rpx" name="manager" />
 				</view>
@@ -34,8 +33,7 @@
 				<van-fields
 					:value="param.password"
 					:type="passwordType"
-					@change="e=>param.password=e.detail"
-					
+					@input="e=>param.password=e.detail"
 					:border="false"
 				>
 				<view slot="label" style="width:140upx;">密码</view>
@@ -51,7 +49,7 @@
 					:value="param.verifyCode"
 					clearable
 					use-button-slot
-					@change="e=>param.verifyCode=e.detail"
+					@input="e=>param.verifyCode=e.detail"
 				>
 					<view slot="label" style="width:140upx;">验证码</view>
 					<view slot="left-icon" style="margin-right:20rpx;">
@@ -74,6 +72,7 @@
 						:value="remember"
 						checked-color="#00e5cb"
 						@change="onChange"
+						custom-class="sdfe"
 						>
 						</van-checkbox>
 					</view>
@@ -102,11 +101,11 @@
 			</view>
 		</view> -->
 		<view class="sub">
-			<button type="primary" class="primary orge" @tap="bindLogin">登录</button>
+			<button type="primary" class="primary orge" @tap="bindLogin" style="font-weight:700;">登录</button>
 		</view>
 		<van-action-sheet
 		:show="show"
-		:actions="select_code['AAZ026']"
+		:actions="select_code['AAZ0261']"
 		@close="onClose"
 		@select="onSelect"
 		/>
@@ -114,7 +113,7 @@
 </template>
 
 <script>
-	import service from '../../service.js';
+	import service from '@/service.js';
 	import md5 from '@/components/md5'
 	import {
 		mapState,
@@ -165,18 +164,71 @@
 				],
 			}
 		},
+		onShow(){
+			let sely = this
+			this.param.location = this.getNowFormatDate()
+            // 获取定位
+            wx.getLocation({
+                type: 'wgs84',
+                success(res) {
+                    let {longitude,latitude} = res;
+                    console.log({longitude,latitude})
+                    sely.param.location = `${longitude},${latitude}`
+                },
+                fail(){
+					wx.showModal({
+						title: '温馨提示',
+						content: '获取定位失败，请前往设置打开定位权限',
+						confirmText: '设置',
+						success(res) {
+							if (res.confirm) {
+								wx.openSetting({
+									success: function (res) {
+										if (res.authSetting["scope.userLocation"]) {
+											wx.getLocation({
+												type: 'wgs84',
+												success(res) {
+													let {longitude,latitude} = res;
+													sely.param.location = `${longitude},${latitude}`
+												}
+											})
+										}else{
+											// wx.navigateBack({
+											//     delta: 1
+											// })
+										}
+									}
+								})
+							} else if (res.cancel) {
+								// wx.navigateBack({
+								//     delta: 1
+								// })
+							}
+						}
+					})
+                }
+            })
+		},
 		computed: mapState(['forcedLogin','imgurl','select_code']),
 		methods: {
 			...mapMutations(['login']),
 			islive(){
-				this.$store.dispatch('islive',{aaz024:this.param.userId}).then(e=>{
-					if(!e){
-						uni.showToast({
-							icon: 'none',
-							title: `账户${this.param.userId}不存在`
-						});
-					}
-				})
+				console.log(service.getuser())
+				let user = service.getuser()
+				let ox = user.find(obj=>obj.userId == this.param.userId)
+				console.log(ox)
+				if(ox){
+					this.param.password = ox.password
+				}
+				console.log(this.param.userId)
+				// this.$store.dispatch('islive',{aaz024:this.param.userId}).then(e=>{
+				// 	if(!e){
+				// 		uni.showToast({
+				// 			icon: 'none',
+				// 			title: `账户${this.param.userId}不存在`
+				// 		});
+				// 	}
+				// })
 			},
 			shuaxin(){
 				this.$store.dispatch('verifyCode')
@@ -221,6 +273,22 @@
 				}else{
 					this.$store.commit('set_userInfo',res.data)
 					this.$store.commit('login',true)
+					let user = service.getuser()
+					let orm = false,forget = ''
+					if(this.remember){
+						forget = user.map(obj=>{
+							if(obj.userId==this.param.userId){
+								orm = true
+								return this.param
+							}else{
+								return obj
+							}
+							
+						})
+						if(!orm) forget.push(this.param)
+						service.userforget(forget)
+					}
+					
 					uni.reLaunch({
 						url: '../main/main',
 					});
@@ -334,4 +402,5 @@
 		height: 100%;
 		opacity: 0;
 	}
+	
 </style>

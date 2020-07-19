@@ -4,13 +4,13 @@
             <check-radius top title="是否具备技能资格" @set-param="e=>submitData.aat001=e" actions="aat001"
                 :default="submitData.aat001"></check-radius>
             <view v-show="submitData.aat001=='1'">
-                <van-field top :value="submitData.aat029" label=" " placeholder="请填写答案" required @change="e=>submitData.aat029=e.detail"/>
+                <van-field top :value="submitData.aat029" label=" " placeholder="请填写技能资格" required @change="e=>submitData.aat029=e.detail"/>
             </view>
             
             <check-radius title="是否具备专业技术资格" @set-param="e=>submitData.aat002=e" actions="aat002"
                 :default="submitData.aat002"></check-radius>
             <view v-show="submitData.aat002=='1'">
-                <van-field top :value="submitData.aat030" label=" " placeholder="请填写答案" required @change="e=>submitData.aat030=e.detail"/>
+                <van-field top :value="submitData.aat030" label=" " placeholder="请填写技能资格" required @change="e=>submitData.aat030=e.detail"/>
             </view>
             
             
@@ -43,11 +43,11 @@
                 <check-radius title="从事行业" @set-param="e=>submitData.aav008=e" actions="aav008"
                     :default="submitData.aav008"></check-radius>
                 <view v-show="submitData.aav008=='4'">
-                    <van-field top required :value="submitData.aav024" placeholder="请填写答案" @change="e=>submitData.aav024=e.detail"/>
+                    <van-field top required :value="submitData.aav024" placeholder="请填写行业" @change="e=>submitData.aav024=e.detail"/>
                 </view>
                 
-                <check-address two title="转移就业地点" @set-param="setAdd"></check-address>
-                <check-picker title="转移就业时间" @set-param="e=>submitData.aav010=e"></check-picker>
+                <check-address two title="转移就业地点" @set-param="setAdd" :value1="submitData.aav009"></check-address>
+                <check-picker title="转移就业时间" @set-param="e=>submitData.aav010=e" :value="submitData.aav010"></check-picker>
 
                 <van-field :value="submitData.aav011" label="转移就业单位名称" placeholder="请输入内容" @change="e=>submitData.aav011=e.detail"/>
                 <check-radius title="转移就业月收入" @set-param="e=>submitData.aav012=e" actions="aav012"
@@ -56,18 +56,18 @@
             <!-- 自主创业 -->
             <view v-show="submitData.aav005=='02'">
                 <van-field :value="submitData.aad002" label="创业项目名称" placeholder="请输入内容" @change="e=>submitData.aad002=e.detail"/>
-                <check-address two title="创业项目地址" @set-param="setAdd_two"></check-address>
-                <check-picker title="创业时间" @set-param="e=>submitData.aad001=e"></check-picker>
+                <check-address two title="创业项目地址" @set-param="setAdd_two" :value1="submitData.aad003"></check-address>
+                <check-picker title="创业时间" @set-param="e=>submitData.aad001=e" :value="submitData.aad001"></check-picker>
                 <check-radius title="创业项目所属行业" @set-param="e=>submitData.aad007=e" actions="aad007"
                     :default="submitData.aad007"></check-radius>
                 <view v-show="submitData.aad007=='09'">
-                    <van-field top required :value="submitData.aad009" placeholder="请填写答案" @change="e=>submitData.aad009=e.detail"/>
+                    <van-field top required :value="submitData.aad009" placeholder="请填写行业" @change="e=>submitData.aad009=e.detail"/>
                 </view>
                 
                 <check-radius title="创业单位类型" @set-param="e=>submitData.aad008=e" actions="aad008"
                     :default="submitData.aad008"></check-radius>
                 <view v-show="submitData.aad008=='09'">
-                    <van-field top required :value="submitData.aad010" placeholder="请填写答案" @change="e=>submitData.aad010=e.detail"/>
+                    <van-field top required :value="submitData.aad010" placeholder="请填写创业单位类型" @change="e=>submitData.aad010=e.detail"/>
                 </view>
                 
                 <van-field :value="submitData.aad004" label="创业项目投资金额（万元）" placeholder="请输入数字" @change="e=>submitData.aad004=e.detail"/>
@@ -80,10 +80,10 @@
                 <check-checkbox title="未就业原因（可多选）" @set-param="e=>submitData.aav013=e" actions="aav013"
                     :default="submitData.aav013"></check-checkbox>
                 <view v-show="submitData.aav013.indexOf('08')>-1">
-                    <van-field top :value="submitData.aav025" placeholder="请填写答案" @change="e=>submitData.aav025=e.detail"/>
+                    <van-field top :value="submitData.aav025" placeholder="请填写未就业原因" @change="e=>submitData.aav025=e.detail"/>
                 </view>
                 
-                <check-picker title="返乡时间" @set-param="e=>submitData.aav014=e"></check-picker>
+                <check-picker title="返乡时间" @set-param="e=>submitData.aav014=e" :value="submitData.aav014"></check-picker>
                 <check-radius title="是否有就业意向" @set-param="e=>submitData.aav015=e" actions="aav015"
                     :default="submitData.aav015"></check-radius>
                 <view v-show="submitData.aav015=='1'">
@@ -95,11 +95,11 @@
                     :default="submitData.aav019"></check-radius>                
                 <view v-show="submitData.aav019=='1'">
                     <van-field :value="submitData.aav020" label="参加培训工种" placeholder="请输入内容" @change="e=>submitData.aav020=e.detail"/>
-                    <check-picker title="参训开始时间" @set-param="e=>submitData.aav022=e"></check-picker>
-                    <check-picker title="参训结束时间" @set-param="e=>submitData.aav023=e"></check-picker>
+                    <check-picker title="参训开始时间" @set-param="e=>submitData.aav022=e" :value="submitData.aav022"></check-picker>
+                    <check-picker title="参训结束时间" @set-param="e=>submitData.aav023=e" :value="submitData.aav023"></check-picker>
                 </view>
                 <view v-show="submitData.aav019=='0'">
-                    <check-checkbox other="10" title="参加培训意向（可多选，[无意向]不可与其他项同时选择）" @set-param="e=>submitData.aav021=e" actions="aav021"
+                    <check-checkbox other="10" title="参加培训意向（[无意向]不可与其他项同时选择）" @set-param="e=>submitData.aav021=e" actions="aav021"
                         :default="submitData.aav021"></check-checkbox>
                     <view v-show="submitData.aav021.indexOf('21')>-1">
                         <van-field required top :value="submitData.aav026" placeholder="请填写答案" @change="e=>submitData.aav026=e.detail"/>
@@ -149,7 +149,6 @@
                     aav019:'',
                     aav016:'',
                     aav026:'',
-                    aav026:'',
                     aav020:'',
                     aav022:'',
                     aav023:'',
@@ -181,11 +180,13 @@
         mounted(){
 			this.default = Object.assign({},this.submitData)
 			if(this.editData!=null){
+				// console.log(`-----tack-two-----`,this.editData)
 				Object.keys(this.submitData).map(obj=>{
 					if(this.editData[obj]){
 						this.submitData[obj] = this.editData[obj]
 					}
-				})
+                })
+                // console.log(`-----tack-two-----`,this.submitData)
 			}
 		},
 		methods:{

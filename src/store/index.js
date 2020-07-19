@@ -19,8 +19,9 @@ const store = new Vuex.Store({
 		userName: "",
 		person_id:'',
 		styleClass:{
-			style_is:'style_one',
+			style_is:'style_two',
 		},
+		at:1,
 		select_tree:{
 			l2:[],
 			l3:[],
@@ -40,14 +41,29 @@ const store = new Vuex.Store({
 		single_user:{},
 		dbdata:[],
 		setSelect:[],
-		editData:null
+		editData:null,
+		select_top_tree:{},
+		select_page_data:[]
 	},
 	mutations: {
-		edit_data(store,param){
-			store.editData = param
+		set_select_page_data(state,param){
+			state.select_page_data = param
 		},
-		set_db(store,param){
-			store.dbdata = param
+		set_top_select_tree(state,param){
+			param.areaList = param.areaList.map(obj=>{
+				return {...obj,text:obj.label,value:obj.id}
+			})
+			
+			state.select_top_tree = param
+		},
+		set_at(state,param){
+			state.at = param
+		},
+		edit_data(state,param){
+			state.editData = param
+		},
+		set_db(state,param){
+			state.dbdata = param
 		},
 		set_single_user(state,param){
 			console.log('single_user',param)
@@ -127,12 +143,53 @@ const store = new Vuex.Store({
 		}
 	},
 	actions:{
-		async getSelect(state,params){
+		async single_persion(store,param){
+			let params = {aac002:param}
+			console.log(params)
+			let res = await http.post('/statistics/getCollectInfo',params)
+			return res
+		},
+		// 删除
+		// /systemSettings/deleteCollectById
+		async delete_data(store,param){
+			let params = {
+				aac001:param
+			}
+			let res = await http.post('/systemSettings/deleteCollectById',params)
+			return res
+		},
+		async exMssn_non(store,param){
+			// /collectData/getPersonInfoByIdCard
+			console.log(param)
+			let res = await http.post('/collectData/judge',param)
+			return res
+		},
+		async exMssn_data(store,param){
+			// /collectData/getPersonInfoByIdCard
+			console.log(param)
+			let res = await http.post('/collectData/getPersonInfoByIdCard',param)
+			return res
+		},
+		async setUserAdt(store,param){
+			let res = await http.post('/account/update',param)
+			return res
+		},
+		async getMockAddress(store,param){
+			console.log(param)
+			let res = await http.post('/statistics/getCollectForPublic',{aaa020:param})
+			if(res.success == "OK"){
+				console.log(`-----位置----`,res)
+				return res.data
+			}
+			
+		},
+		async getSelect(store,params){
 			let param = {
 				accountId:params
 			}
 			let res = await http.post('/account/search/condition',param)
 			console.log(`------查询页面四级数据-----`,res)
+			store.commit('set_top_select_tree',res.data)
 			// store.commit('setSelect',res)
 		},
 		async getSystemPublic(){
@@ -156,11 +213,19 @@ const store = new Vuex.Store({
 			return false
 		},
 		async db(store,param){
+			console.log(param)
 			let res = await http.post('/statistics/getInfo',param)
-			console.log(res)
 			if(res.success == "OK"){
 				console.log(res)
 				store.commit('set_db',res.data)
+				return res.data
+			}
+		},
+		async dbDown(store,param){
+			let res = await http.post('/statistics/getDrillDownInfo',param)
+			if(res.success == "OK"){
+				console.log(res)
+				return res.data
 			}
 		},
 		async clear(param){
@@ -207,6 +272,14 @@ const store = new Vuex.Store({
 			let address = await http.post('/area/provinceAndCity')
 			store.commit('set_select_tree',address.data)
 		},
+		// 
+		async findroot(store,param){
+			let params = {
+				areaId:param
+			}
+			let res = await http.post('/area/findAreaToRoot',params)
+			return res
+		},
 		// 地址 市下级单位
 		async getCity(store,param){
 			let params = {
@@ -229,6 +302,7 @@ const store = new Vuex.Store({
 			}
 			console.log(param)
 			let list = await http.post('/account/search/list',param)
+			store.commit('set_select_page_data',list.data.dataList)
 			console.log(list)
 			return list
 		},

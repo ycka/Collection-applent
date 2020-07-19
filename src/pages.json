@@ -111,6 +111,34 @@
 				"navigationBarTitleText": "查看",
 				"navigationStyle": "custom"
 			}
+		},
+		{
+			"path": "pages/down/down",
+			"style": {
+				"navigationBarTitleText": "数据下钻",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/downTwo/downTwo",
+			"style": {
+				"navigationBarTitleText": "数据下钻",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/downThree/downThree",
+			"style": {
+				"navigationBarTitleText": "数据下钻",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/downFour/downFour",
+			"style": {
+				"navigationBarTitleText": "数据下钻",
+				"navigationStyle": "custom"
+			}
 		}
 	],
 	"tabBar": {

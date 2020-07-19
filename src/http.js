@@ -16,7 +16,7 @@ function post(url, data) {
   //   aae036:,
   //   aae035:store.userInfo.aae005
   // }
-  console.log(service.getSessionId())
+  // console.log(service.getSessionId())
   return request( host + url, 'POST', data,{
     // 'content-type': 'application/x-www-form-urlencoded',
     'content-type': 'application/json' ,
@@ -68,6 +68,12 @@ function request(url, method, data,header={}) {
         // console.log(res)
         if(res.statusCode==401){
           console.log(401)
+        }
+        // console.log(res)
+        if(res.data.code==1400){
+          service.removeUser()
+          wx.hideLoading()
+          wx.reLaunch({url:`../login/login`})
         }
         if (res.success=='OK') {
           wx.hideLoading()

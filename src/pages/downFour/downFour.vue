@@ -1,12 +1,12 @@
 
 <template>
     <view class="content">
-        <custom-header title="采集统计"></custom-header>
+        <custom-header title="采集统计" child></custom-header>
         <view class="view-group">
             <view class="tj_bg">
                 <h3 style="color:#fff;padding:40upx;padding-bottom:0">{{first.aac010}}实时数据</h3>
                 <view class="tj">
-                    <view class="tj_title">截止2020-05-21 18:50:22 数据统计</view>
+                    <view class="tj_title">截止{{getNowFormatDate()}} 数据统计</view>
                     <view class="tj_btn">刷新统计数据</view>
                 </view>
                 <view class="view-item tj">
@@ -41,14 +41,14 @@
                     <view class="item-child">本月</view>
                     <view class="item-child">累计</view>
                 </view>
-                <view class="view-item" v-for="(obj,idx) in dbdata" :key="idx">
+                <view class="view-item" v-for="(obj,idx) in tableData" :key="idx" v-if="idx!=0">
                     <view class="item-child">{{obj.aac010}}</view>
                     <view class="item-child">{{obj.today}}</view>
                     <view class="item-child">{{obj.thisWeek}}</view>
                     <view class="item-child">{{obj.severDays}}</view>
                     <view class="item-child">{{obj.thisMonth}}</view>
                     <view class="item-child">{{obj.total}}</view>
-                    <view v-if="obj.aac003==null" class="item-child-position" @click="down(obj.aaa020)"> <van-icon name="arrow" /></view>
+                    <view v-if="obj.aac003==null" class="item-child-position" @click="down(obj.aaa020)"> <van-icon v-if="obj.aaa020!=null" name="arrow" /></view>
                 </view>
             </van-panel>
             
@@ -82,12 +82,12 @@
                         <view class="item-child">累计</view>
                     </view>
                     <view class="view-item">
-                        <view class="item-child">{{single.aac010}}</view>
-                        <view class="item-child">{{single.today}}</view>
-                        <view class="item-child">{{single.thisWeek}}</view>
-                        <view class="item-child">{{single.severDays}}</view>
-                        <view class="item-child">{{single.thisMonth}}</view>
-                        <view class="item-child">{{single.total}}</view>
+                        <view class="item-child">小张</view>
+                        <view class="item-child">1</view>
+                        <view class="item-child">22</view>
+                        <view class="item-child">77</view>
+                        <view class="item-child">213</view>
+                        <view class="item-child">7865</view>
                     </view>
                     <map
                         id="map"
@@ -103,13 +103,6 @@
                 </van-panel>
                 
             </view>
-            <!-- 柱状图 -->
-            <!-- <div class="qiun-charts">
-                <van-panel title="标题">
-                    <canvas canvas-id="canvasColumn" id="canvasColumn" class="charts" @touchstart="touchColumn" style="height:500upx;"></canvas>
-                </van-panel>
-                
-            </div> -->
         </view>
     </view>
 </template>
@@ -124,7 +117,7 @@
         computed: {
             ...mapState(['single_user','userInfo','select_code','dbdata']),
             first(){
-                return this.dbdata[0]
+                return this.tableData[0]
             }
         },
         data(){
@@ -140,12 +133,13 @@
                 pixelRatio: 1, //设备像素比
                 actives:'today',
                 ate:0,
+                tableData:[],
+                quhua:'',
                 single:{}
             }
         },
-        onLoad() {
-            this.$store.dispatch('getMockAddress',this.userInfo.aaa020).then(e=>{
-                console.log(e)
+        onLoad(e) {
+            this.$store.dispatch('getMockAddress',this.quhua).then(e=>{
                 this.markers = e.map(obj=>{
                     let param =  {
                         iconPath: `/static/img/map/a2.png`,
@@ -165,17 +159,24 @@
                 aaa020:this.userInfo.aaa020,
                 aaz026:this.userInfo.aaz026
             }
-            this.$store.dispatch('db',param)
-            
-			// _self = this;
-			// this.cWidth=uni.upx2px(750);
-			// this.cHeight=uni.upx2px(500);
-			// this.getServerData();
+            this.quhua = e.aaa020
+            this.$store.dispatch('dbDown',e).then(ex=>{
+                this.tableData = ex
+                console.log(ex)
+                this.chartData = ex.map(obj=>{
+                    let rx = {}
+                    console.log()
+                    let a = obj['aac003']
+                    if(a==null) a = obj['aac010']
+                    rx.data = obj[this.actives]
+                    rx.name = a
+                    return rx
+                })
+                // canvaRing.updateData({series:this.chartData})
+                console.log(this.chartData)
+            })
         },
         created() {
-            // var systemInfo = wx.getSystemInfoSync();
-            // this.cWidth = systemInfo.windowWidth; //可使用窗口宽度，
-            // this.cHeight = 500 / 750 * systemInfo.windowWidth;
             _self = this;
 			this.cWidth = uni.upx2px(750);
 			this.cHeight = uni.upx2px(500);
@@ -183,18 +184,30 @@
         },
   
         methods: {
+            getNowFormatDate() {
+				var date = new Date();
+				var seperator1 = "-";
+				var seperator2 = ":";
+				var month = date.getMonth() + 1;
+				var strDate = date.getDate();
+				if (month >= 1 && month <= 9) {
+					month = "0" + month;
+				}
+				if (strDate >= 0 && strDate <= 9) {
+					strDate = "0" + strDate;
+				}
+				var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+						+ " " + date.getHours() + seperator2 + date.getMinutes()
+						+ seperator2 + date.getSeconds();
+				return currentdate;
+			},
             down(id){
-                wx.navigateTo({
-                    url: `../down/down?aaa020=${id}`
-                });
+                // wx.navigateTo({
+                //     url: `../down/down?aaa020=${id}`
+                // });
             },
             markertap(e) {
                 console.log(e)
-                this.$store.dispatch('single_persion',e.markerId).then(e=>{
-                    console.log(e)
-                })
-                // this.single = this.dbdata.find(obj=>obj.aac002 == e.markerId)
-                console.log(this.single)
                 this.markers.map(ob=>{
                     if(ob.id==e.markerId){
                         ob.iconPath =  `/static/img/map/a1.png`
@@ -205,21 +218,17 @@
                 })
             },
             onChanges(e){
-                console.log(e.mp.detail.name)
-                console.log(this.actives)
                 this.actives = e.mp.detail.name
-                this.chartData = this.dbdata.map(obj=>{
+                this.chartData = this.tableData.map(obj=>{
                     let rx = {}
-                    rx.data = obj[e.mp.detail.name]
-                    // rx.name = obj['aac003']
                     if(obj['aac003']==null){
                         rx.name = obj.aac010
                     }else{
                         rx.name = obj['aac003']||'无名'
                     }
+                    rx.data = obj[this.actives]
                     return rx
                 })
-                console.log(this.chartData)
                 canvaRing.updateData({series:this.chartData})
             },
             showRing(canvasId) {
@@ -250,9 +259,7 @@
 					},
 					background: '#fff',   // 中间圆的背景颜色
 					pixelRatio: _self.pixelRatio,
-					series:[
-                        {name:'sdf',data:'11'},
-                    ],//this.chartData,
+					series:this.chartData,
 					animation: true,     // 动画  画个圆的那种
 					width: _self.cWidth * _self.pixelRatio,
 					height: _self.cHeight * _self.pixelRatio,
@@ -261,12 +268,10 @@
 				});
 			},
 			touchRing(e) {
-                console.log(e)
-                // 这个是点击的时候显示数值，但是我写上报错，就注销了 
 				canvaRing.showToolTip(e, {
 					format:(item)=> {
                         let sum = 0
-                        this.dbdata.map((obj)=>{
+                        this.tableData.map((obj)=>{
                             sum+=obj[this.actives]
                         });
                         this.ate = (parseInt(item.data)/sum).toFixed(2)
@@ -280,63 +285,6 @@
 					}
 				});
 			},
-
-            // 柱状图开始
-
-            // showColumn(){
-            //     canvaColumn=new uCharts({
-            //     canvasId: "canvasColumn",
-            //     type: 'column',
-            //     legend:true,
-            //     fontSize:11,
-            //     background:'#FFFFFF',
-            //     pixelRatio:this.pixelRatio,
-            //     animation: true,
-            //     // categories: chartData.categories,
-            //     // series: chartData.series,
-            //     categories: ["2012", "2013", "2014", "2015", "2016", "2017"],
-            //     series: [{
-            //         "name": "成交量1",
-            //         "data": [15, {
-            //             "value": 20,
-            //             "color": "#f04864"
-            //         }, 45, 37, 43, 34]
-            //         }, {
-            //         "name": "成交量2",
-            //         "data": [30, {
-            //             "value": 40,
-            //             "color": "#facc14"
-            //         }, 25, 14, 34, 18]
-            //         }],
-            //         xAxis: {
-            //             disableGrid:true,
-            //         },
-            //         yAxis: {
-            //             //disabled:true
-            //         },
-            //         dataLabel: true,
-            //         width: this.cWidth * this.pixelRatio,
-            //         height: this.cHeight * this.pixelRatio,
-            //                 extra: {
-            //                     column: {
-            //                         type:'group',
-            //                         width: this.cWidth*this.pixelRatio*0.45/6
-            //                     }
-            //                 }
-            //             });
-
-            //         },
-            //         touchColumn(e){
-            //             canvaColumn.showToolTip(e, {
-            //                 // format: function (item, category) {
-            //                 // 	if(typeof item.data === 'object'){
-            //                 // 		return category + ' ' + item.name + ':' + item.data.value
-            //                 // 	}else{
-            //                 // 		return category + ' ' + item.name + ':' + item.data
-            //                 // 	}
-            //                 // }
-            //             });
-            // },
             onChange(event) {
                 wx.showToast({
                     title: `切换到标签 ${event.detail.name}`,
@@ -345,24 +293,14 @@
             },
         },
         mounted() {
-            this.chartData = this.dbdata.map(obj=>{
-                let rx = {}
-                rx.data = obj[this.actives]
-                if(obj['aac003']==null){
-                    rx.name = obj.aac010
-                }else{
-                    rx.name = obj['aac003']||'无名'
-                }
-                return rx
-            })
-            console.log(this.chartData)
+            
             this.showRing('canvasRing')
             // this.showColumn();
-            uni.setNavigationBarTitle({
-                title: '沈阳市采集实时数据'
-            })
+            // uni.setNavigationBarTitle({
+            //     title: '沈阳市采集实时数据'
+            // })
 
-            canvaRing.updateData({series:this.chartData})
+            // canvaRing.updateData({series:this.chartData})
         },
     }
 </script>
@@ -399,9 +337,6 @@
         width:750upx;
         flex-direction:column;
         .view-item{
-            .item-child:first-child{
-                font-weight:700;
-            }
             font-size:32upx;
             position:relative;
             display: flex;
@@ -416,6 +351,9 @@
             line-height:100upx;
             margin:10upx auto;
             border-radius: 10upx;
+            .item-child:first-child{
+                font-weight:700;
+            }
             .item-child-position{
                 position:absolute;
                 right:10upx;

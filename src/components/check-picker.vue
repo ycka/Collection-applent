@@ -81,7 +81,7 @@
             },
             makeleavesubms(da){
                 this.$emit('setParam',this.getData(da.detail))
-                this.makeleavetext = this.getData(da.detail)
+                this.makeleavetext = this.getDatas(da.detail)
 				this.makeleave = false
 			},
             makeleavecancs(){
@@ -100,6 +100,21 @@
 				second = ("0" + datetime.getSeconds()).slice(-2);
 				// 拼接
 		        let result = year + "-"+ month +"-"+ date //+" "+ hour +":"+ minute +":" + second;
+				// 返回
+				return result;
+            },
+            getDatas(param){
+				let datetime = new Date(param);
+				console.log(param)
+				// 获取年月日时分秒值  slice(-2)过滤掉大于10日期前面的0
+				let year = datetime.getFullYear(),
+				month = ("0" + (datetime.getMonth() + 1)).slice(-2),
+				date = ("0" + datetime.getDate()).slice(-2),
+				hour = ("0" + datetime.getHours()).slice(-2),
+				minute = ("0" + datetime.getMinutes()).slice(-2),
+				second = ("0" + datetime.getSeconds()).slice(-2);
+				// 拼接
+		        let result = year + "年"+ month +"月"+ date+"日" //+" "+ hour +":"+ minute +":" + second;
 				// 返回
 				return result;
 			},

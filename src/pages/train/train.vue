@@ -27,11 +27,11 @@
 		components:{
 			tackFour
 		},
-		computed: mapState(['styleClass']),
+		computed: mapState(['styleClass','at']),
 		data(){
 			return{
 				num:0,
-				show:false
+				show:true
 			}
 		},
 		methods:{
@@ -41,7 +41,7 @@
 			this.show = true
 		},
 		onHide(){
-			this.show = false
+			if(this.at!=1) this.show = false
 		},
 		onLoad() {
 			
